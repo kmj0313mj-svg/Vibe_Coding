@@ -1,1 +1,1267 @@
+/* ===== 공통 스타일 ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ===== 다크모드 (기본) ===== */
+:root,
+[data-theme="dark"] {
+    --primary: #4f46e5;
+    --primary-dark: #4338ca;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --bg-dark: #0f172a;
+    --bg-card: #1e293b;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --border: #334155;
+}
+
+/* ===== 라이트모드 ===== */
+[data-theme="light"] {
+    --primary: #4f46e5;
+    --primary-dark: #4338ca;
+    --success: #059669;
+    --danger: #dc2626;
+    --warning: #d97706;
+    --bg-dark: #f1f5f9;
+    --bg-card: #ffffff;
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    --border: #e2e8f0;
+}
+
+[data-theme="light"] .login-page {
+    background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 50%, #f8fafc 100%);
+}
+
+[data-theme="light"] .login-card,
+[data-theme="light"] .settings-card,
+[data-theme="light"] .voice-section {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .video-placeholder {
+    background: linear-gradient(180deg, #e2e8f0 0%, #f1f5f9 100%);
+}
+
+[data-theme="light"] .status-badge.pet-detected {
+    background: rgba(5, 150, 105, 0.2);
+    color: #059669;
+}
+
+[data-theme="light"] .status-badge.pet-absent {
+    background: rgba(220, 38, 38, 0.2);
+    color: #dc2626;
+}
+
+[data-theme="light"] .settings-card input[readonly],
+[data-theme="light"] .settings-card input[disabled] {
+    background: #f8fafc;
+}
+
+body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+/* ===== 로그인 페이지 ===== */
+.login-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+}
+
+.login-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
+}
+
+.login-card {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.logo-icon {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 16px;
+}
+
+.login-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.login-header p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.login-form .form-group {
+    margin-bottom: 20px;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.login-form input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.login-form input::placeholder {
+    color: #64748b;
+}
+
+.error-message {
+    color: var(--danger);
+    font-size: 0.875rem;
+    margin-bottom: 16px;
+    padding: 8px;
+    background: rgba(239, 68, 68, 0.1);
+    border-radius: 6px;
+}
+
+.success-message {
+    font-size: 0.875rem;
+    margin-bottom: 16px;
+    padding: 8px;
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: 6px;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+.btn-block {
+    width: 100%;
+}
+
+.login-footer {
+    margin-top: 24px;
+}
+
+.login-hint {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.signup-link {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.signup-link a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.signup-link a:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+.theme-fab {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 100;
+}
+
+/* ===== 대시보드 ===== */
+.dashboard {
+    min-height: 100vh;
+    background: var(--bg-dark);
+}
+
+.dashboard-header {
+    background: var(--bg-card);
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.dashboard-header h1 {
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.btn-secondary {
+    background: var(--border);
+    color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+    background: #475569;
+}
+
+.btn-logout {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+}
+
+.btn-logout:hover {
+    color: var(--danger);
+    border-color: var(--danger);
+}
+
+.btn-theme {
+    background: transparent;
+    border: 1px solid var(--border);
+    font-size: 1.2rem;
+    padding: 8px 12px;
+}
+
+.btn-theme:hover {
+    background: var(--border);
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+    filter: brightness(1.1);
+}
+
+/* 비디오 영역 */
+.video-section {
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.video-wrapper {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.video-container {
+    position: relative;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+}
+
+.video-container video,
+.video-container .video-placeholder {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.video-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+.video-placeholder .placeholder-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+/* 상태 오버레이 */
+.status-overlay {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 10;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    backdrop-filter: blur(8px);
+}
+
+.status-badge.pet-detected {
+    background: rgba(16, 185, 129, 0.3);
+    border: 1px solid var(--success);
+    color: #34d399;
+}
+
+.status-badge.pet-absent {
+    background: rgba(239, 68, 68, 0.3);
+    border: 1px solid var(--danger);
+    color: #f87171;
+}
+
+.status-time {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+/* 컨트롤 버튼 */
+.video-controls {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+/* 음성 송출 영역 */
+.voice-section {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border: 1px solid var(--border);
+}
+
+.voice-section h3 {
+    font-size: 1rem;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.voice-input-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.voice-input-group input {
+    flex: 1;
+    min-width: 200px;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.voice-input-group input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.voice-input-group input::placeholder {
+    color: #64748b;
+}
+
+/* ===== 설정 페이지 ===== */
+.settings-page {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.settings-header {
+    margin-bottom: 32px;
+}
+
+.settings-header h1 {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.settings-header p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.settings-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border: 1px solid var(--border);
+}
+
+.settings-card h2 {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.settings-card .form-group {
+    margin-bottom: 20px;
+}
+
+.settings-card .form-group:last-child {
+    margin-bottom: 0;
+}
+
+.settings-card input[readonly],
+.settings-card input[disabled] {
+    background: #0f172a;
+    color: var(--text-secondary);
+    cursor: not-allowed;
+}
+
+.theme-toggle-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.theme-option {
+    flex: 1;
+    min-width: 140px;
+}
+
+.theme-option.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.form-hint {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 8px;
+}
+
+/* 토글 스위치 */
+.switch-group {
+    margin-bottom: 20px;
+}
+
+.switch-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.switch-text {
+    flex: 1;
+}
+
+.switch-input {
+    display: none;
+}
+
+.switch-slider {
+    position: relative;
+    width: 48px;
+    height: 26px;
+    background: var(--border);
+    border-radius: 26px;
+    transition: background 0.2s;
+}
+
+.switch-slider::after {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    background: white;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.switch-input:checked + .switch-slider {
+    background: var(--primary);
+}
+
+.switch-input:checked + .switch-slider::after {
+    transform: translateX(22px);
+}
+
+.settings-card select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.settings-card select:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+    transition: color 0.2s;
+}
+
+.back-link:hover {
+    color: var(--primary);
+}
+
+/* ===== 커뮤니티/기록장 ===== */
+.gallery-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.gallery-header {
+    margin-bottom: 24px;
+}
+
+.gallery-header h1 {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.gallery-header p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.gallery-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.tab-btn:hover {
+    border-color: var(--primary);
+}
+
+.tab-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+.gallery-tab-content {
+    display: none;
+}
+
+.gallery-tab-content.active {
+    display: block;
+}
+
+.tab-hint {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: 16px;
+}
+
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.photo-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.photo-card:hover {
+    transform: translateY(-4px);
+}
+
+.photo-card img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    display: block;
+}
+
+.photo-card-info {
+    padding: 12px;
+}
+
+.photo-date {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.photo-memo {
+    display: block;
+    font-size: 0.85rem;
+    margin-top: 4px;
+    color: var(--text-primary);
+}
+
+.diary-input-section {
+    margin-bottom: 24px;
+}
+
+.diary-input-section textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-size: 1rem;
+    resize: vertical;
+    margin-bottom: 12px;
+}
+
+.diary-input-section textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.diary-input-section textarea::placeholder {
+    color: var(--text-secondary);
+}
+
+.diary-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.diary-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    position: relative;
+}
+
+.diary-content {
+    color: var(--text-primary);
+    white-space: pre-wrap;
+    padding-right: 40px;
+}
+
+.diary-meta {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 8px;
+}
+
+.diary-delete {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    opacity: 0.6;
+}
+
+.diary-delete:hover {
+    opacity: 1;
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.empty-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.empty-sub {
+    font-size: 0.9rem;
+    margin-top: 8px;
+}
+
+/* 모달 */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    cursor: pointer;
+}
+
+.modal-content {
+    position: relative;
+    background: var(--bg-card);
+    border-radius: 12px;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: auto;
+    border: 1px solid var(--border);
+    z-index: 1001;
+    width: 100%;
+    max-width: 480px;
+}
+
+.modal-header {
+    padding: 24px 24px 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.modal-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 2rem;
+    cursor: pointer;
+    border-radius: 50%;
+    line-height: 1;
+    transition: all 0.2s;
+}
+
+.modal-close:hover {
+    background: var(--border);
+    color: var(--text-primary);
+}
+
+.signup-form {
+    padding: 24px;
+}
+
+.signup-form .form-group {
+    margin-bottom: 20px;
+}
+
+.signup-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.signup-form input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.signup-form input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.signup-form input::placeholder {
+    color: #64748b;
+}
+
+.success-message {
+    color: var(--success);
+}
+
+.modal-content img {
+    display: block;
+    max-width: 100%;
+}
+
+.modal-info {
+    padding: 16px;
+}
+
+.modal-info input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* ===== 대시보드 기록장/사진첩 미리보기 ===== */
+.dashboard-gallery-section,
+.dashboard-diary-section {
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 20px;
+    margin-bottom: 24px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.section-header h3 {
+    font-size: 1.1rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.view-all-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.view-all-link:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+.recent-photos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+}
+
+.recent-photo-item {
+    background: var(--bg-dark);
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s;
+    border: 1px solid var(--border);
+}
+
+.recent-photo-item:hover {
+    transform: translateY(-2px);
+}
+
+.recent-photo-item img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    display: block;
+}
+
+.recent-photo-info {
+    padding: 8px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.recent-diaries {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.recent-diary-item {
+    background: var(--bg-dark);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.recent-diary-item:hover {
+    border-color: var(--primary);
+    transform: translateX(4px);
+}
+
+.recent-diary-content {
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.recent-diary-date {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.empty-state-mini {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.empty-icon-mini {
+    font-size: 32px;
+    margin-bottom: 8px;
+    opacity: 0.5;
+}
+
+.empty-state-mini p {
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+/* ===== 챗봇 영역 ===== */
+.chatbot-section {
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.chatbot-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+}
+
+.chatbot-header h3 {
+    font-size: 1rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-icon {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-icon:hover {
+    background: var(--border);
+}
+
+.chatbot-container {
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+    max-height: 500px;
+}
+
+.chatbot-container.collapsed {
+    display: none;
+}
+
+.chatbot-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: var(--bg-dark);
+}
+
+.chatbot-message {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.chatbot-message.user-message {
+    flex-direction: row-reverse;
+}
+
+.message-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.bot-message .message-avatar {
+    background: var(--primary);
+}
+
+.user-message .message-avatar {
+    background: var(--success);
+}
+
+.message-content {
+    flex: 1;
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    max-width: 70%;
+}
+
+.user-message .message-content {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.message-content p {
+    margin: 0;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+.message-loading {
+    display: flex;
+    gap: 4px;
+    padding: 8px 0;
+}
+
+.message-loading span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-secondary);
+    animation: bounce 1.4s infinite ease-in-out;
+}
+
+.message-loading span:nth-child(1) {
+    animation-delay: -0.32s;
+}
+
+.message-loading span:nth-child(2) {
+    animation-delay: -0.16s;
+}
+
+@keyframes bounce {
+    0%, 80%, 100% {
+        transform: scale(0);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.chatbot-input-area {
+    display: flex;
+    gap: 12px;
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    background: var(--bg-card);
+}
+
+.chatbot-input-area input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.chatbot-input-area input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.chatbot-input-area input::placeholder {
+    color: #64748b;
+}
+
+.chatbot-input-area input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.chatbot-input-area button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ===== 반응형 ===== */
+@media (max-width: 640px) {
+    .login-card {
+        padding: 24px;
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-actions {
+        flex-wrap: wrap;
+    }
+
+    .video-controls {
+        flex-direction: column;
+    }
+
+    .voice-input-group {
+        flex-direction: column;
+    }
+
+    .photo-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .chatbot-container {
+        height: 400px;
+        max-height: 400px;
+    }
+
+    .message-content {
+        max-width: 85%;
+    }
+
+    .recent-photos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
 

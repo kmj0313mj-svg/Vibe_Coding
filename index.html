@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>반려동물 모니터링 - 로그인</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/theme.js"></script>
+</head>
+<body class="login-page">
+    <button type="button" class="btn btn-theme theme-fab" id="themeToggle" title="테마 전환">🌙</button>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <span class="logo-icon">🐾</span>
+                <h1>반려동물 모니터링</h1>
+                <p>시스템에 로그인하세요</p>
+            </div>
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username">아이디</label>
+                    <input type="text" id="username" name="username" placeholder="아이디를 입력하세요" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="password">비밀번호</label>
+                    <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required autocomplete="current-password">
+                </div>
+                <div id="loginError" class="error-message" style="display: none;"></div>
+                <button type="submit" class="btn btn-primary btn-block">로그인</button>
+            </form>
+            <div class="login-footer">
+                <p class="login-hint">데모: 아이디 <strong>admin</strong> / 비밀번호 <strong>1234</strong></p>
+                <p class="signup-link">계정이 없으신가요? <a href="#" id="signupLink">회원가입</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 회원가입 모달 -->
+    <div id="signupModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>회원가입</h2>
+                <button type="button" class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <form id="signupForm" class="signup-form">
+                <div class="form-group">
+                    <label for="signupUsername">아이디</label>
+                    <input type="text" id="signupUsername" name="username" placeholder="아이디를 입력하세요 (4-20자)" required minlength="4" maxlength="20">
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">비밀번호</label>
+                    <input type="password" id="signupPassword" name="password" placeholder="비밀번호를 입력하세요 (최소 6자)" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="signupPasswordConfirm">비밀번호 확인</label>
+                    <input type="password" id="signupPasswordConfirm" name="passwordConfirm" placeholder="비밀번호를 다시 입력하세요" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">이메일 (선택)</label>
+                    <input type="email" id="signupEmail" name="email" placeholder="example@email.com">
+                </div>
+                <div id="signupError" class="error-message" style="display: none;"></div>
+                <div id="signupSuccess" class="success-message" style="display: none;"></div>
+                <button type="submit" class="btn btn-primary btn-block">가입하기</button>
+            </form>
+        </div>
+    </div>
+    <script src="js/auth.js"></script>
+    <script>
+        // 테마 토글
+        document.getElementById('themeToggle').addEventListener('click', function() {
+            const next = theme.toggle();
+            this.textContent = next === theme.DARK ? '🌙' : '☀️';
+        });
+        document.getElementById('themeToggle').textContent = theme.get() === theme.DARK ? '🌙' : '☀️';
+
+        // 로그인 폼 제출
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorEl = document.getElementById('loginError');
+
+            if (auth.login(username, password)) {
+                window.location.href = 'dashboard.html';
+            } else {
+                errorEl.textContent = '아이디 또는 비밀번호가 올바르지 않습니다.';
+                errorEl.style.display = 'block';
+            }
+        });
+
+        // 회원가입 모달 열기/닫기
+        const signupModal = document.getElementById('signupModal');
+        const signupLink = document.getElementById('signupLink');
+        const closeModal = document.getElementById('closeModal');
+
+        signupLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            signupModal.style.display = 'flex';
+            signupModal.classList.add('active');
+        });
+
+        function closeSignupModal() {
+            signupModal.style.display = 'none';
+            signupModal.classList.remove('active');
+            document.getElementById('signupForm').reset();
+            document.getElementById('signupError').style.display = 'none';
+            document.getElementById('signupSuccess').style.display = 'none';
+        }
+
+        closeModal.addEventListener('click', closeSignupModal);
+
+        window.addEventListener('click', function(e) {
+            if (e.target === signupModal) {
+                closeSignupModal();
+            }
+        });
+
+        // 회원가입 폼 제출
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('signupUsername').value;
+            const password = document.getElementById('signupPassword').value;
+            const passwordConfirm = document.getElementById('signupPasswordConfirm').value;
+            const email = document.getElementById('signupEmail').value;
+            const errorEl = document.getElementById('signupError');
+            const successEl = document.getElementById('signupSuccess');
+
+            errorEl.style.display = 'none';
+            successEl.style.display = 'none';
+
+            if (password !== passwordConfirm) {
+                errorEl.textContent = '비밀번호가 일치하지 않습니다.';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            const result = auth.signup(username, password, email);
+            if (result.success) {
+                successEl.textContent = '회원가입이 완료되었습니다! 로그인해주세요.';
+                successEl.style.display = 'block';
+                setTimeout(function() {
+                    closeSignupModal();
+                }, 2000);
+            } else {
+                errorEl.textContent = result.message || '회원가입에 실패했습니다.';
+                errorEl.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

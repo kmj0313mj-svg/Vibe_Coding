@@ -1,0 +1,121 @@
+/**
+ * 대시보드 기능
+ */
+
+// 인증 체크 - 비로그인 시 로그인 페이지로
+if (!auth.isLoggedIn()) {
+    window.location.href = 'index.html';
+}
+
+// 로그아웃
+document.getElementById('logoutBtn').addEventListener('click', () => {
+    auth.logout();
+    window.location.href = 'index.html';
+});
+
+// 테마 토글
+document.getElementById('themeToggle').addEventListener('click', () => {
+    const next = theme.toggle();
+    document.getElementById('themeToggle').textContent = next === theme.DARK ? '🌙' : '☀️';
+});
+document.getElementById('themeToggle').textContent = theme.get() === theme.DARK ? '🌙' : '☀️';
+
+// ===== 반려동물 상태 (데모용 - 랜덤 시뮬레이션) =====
+let petDetected = true;
+let lastDetectedTime = '14:32';
+
+function updateStatus() {
+    const badge = document.getElementById('statusBadge');
+    const icon = document.getElementById('statusIcon');
+    const text = document.getElementById('statusText');
+    const timeEl = document.getElementById('statusTime');
+    const petName = (storage.getSettings().petName || '').trim();
+
+    if (petDetected) {
+        badge.className = 'status-badge pet-detected';
+        icon.textContent = '🟢';
+        text.textContent = petName ? `${petName}가 집에 있어요!` : '반려동물 있음';
+    } else {
+        badge.className = 'status-badge pet-absent';
+        icon.textContent = '🔴';
+        text.textContent = petName ? `${petName}가 보이지 않아요` : '반려동물 없음';
+    }
+    timeEl.textContent = `⏱ 마지막 감지 시간: ${lastDetectedTime}`;
+}
+
+// 데모: 10초마다 상태 토글 (실제로는 AI 감지 결과 연동)
+setInterval(() => {
+    petDetected = Math.random() > 0.5;
+    const now = new Date();
+    lastDetectedTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    updateStatus();
+}, 10000);
+
+// 설정 변경 시 대시보드에서도 즉시 반영 (storage 이벤트는 같은 탭에서 안 됨 - 페이지 새로고침 시 반영)
+updateStatus();
+
+// ===== 화면 캡처 (html2canvas 사용) =====
+document.getElementById('captureBtn').addEventListener('click', async () => {
+    const captureArea = document.getElementById('captureArea');
+
+    try {
+        if (typeof html2canvas === 'undefined') {
+            alert('캡처 기능을 사용하려면 html2canvas 라이브러리가 필요합니다.');
+            return;
+        }
+
+        const canvas = await html2canvas(captureArea, {
+            useCORS: true,
+            allowTaint: true,
+            scale: 1,
+            logging: false
+        });
+
+        const dataUrl = canvas.toDataURL('image/png');
+
+        // 기록장에 저장
+        storage.savePhoto(dataUrl);
+
+        // 다운로드
+        const link = document.createElement('a');
+        const filename = `pet-monitor-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.png`;
+        link.download = filename;
+        link.href = dataUrl;
+        link.click();
+    } catch (err) {
+        alert('캡처 중 오류가 발생했습니다: ' + err.message);
+    }
+});
+
+// ===== 음성 송출 (Web Speech API - 브라우저 TTS) =====
+document.getElementById('voiceSendBtn').addEventListener('click', () => {
+    const input = document.getElementById('voiceInput');
+    const text = input.value.trim();
+
+    if (!text) {
+        alert('말할 내용을 입력해주세요.');
+        return;
+    }
+
+    if (!('speechSynthesis' in window)) {
+        alert('이 브라우저는 음성 합성을 지원하지 않습니다.');
+        return;
+    }
+
+    // 기존 재생 중지
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'ko-KR';
+    utterance.rate = 1;
+    utterance.pitch = 1;
+
+    window.speechSynthesis.speak(utterance);
+});
+
+// 엔터키로 음성 보내기
+document.getElementById('voiceInput').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        document.getElementById('voiceSendBtn').click();
+    }
+});

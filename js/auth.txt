@@ -1,0 +1,48 @@
+/**
+ * 간단한 인증 모듈 (데모용 - localStorage 기반)
+ * 실제 서비스에서는 서버 측 인증 필요
+ */
+const auth = {
+    // 데모용 사용자 (실제로는 서버에서 검증)
+    demoUsers: {
+        admin: '1234'
+    },
+
+    login(username, password) {
+        if (this.demoUsers[username] === password) {
+            const session = {
+                username,
+                loginTime: Date.now()
+            };
+            sessionStorage.setItem('petMonitorAuth', JSON.stringify(session));
+            return true;
+        }
+        return false;
+    },
+
+    logout() {
+        sessionStorage.removeItem('petMonitorAuth');
+    },
+
+    isLoggedIn() {
+        const session = sessionStorage.getItem('petMonitorAuth');
+        if (!session) return false;
+        try {
+            const data = JSON.parse(session);
+            return !!data.username;
+        } catch {
+            return false;
+        }
+    },
+
+    getUsername() {
+        const session = sessionStorage.getItem('petMonitorAuth');
+        if (!session) return null;
+        try {
+            const data = JSON.parse(session);
+            return data.username;
+        } catch {
+            return null;
+        }
+    }
+};

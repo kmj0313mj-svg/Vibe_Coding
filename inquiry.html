@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>반려동물 모니터링 - 1:1 문의</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/theme.js"></script>
+</head>
+<body class="dashboard">
+
+    <!-- ===== GNB ===== -->
+    <header class="gnb" role="banner">
+        <div class="gnb-logo">
+            <a href="dashboard.html" class="gnb-logo-link">
+                <span class="gnb-logo-icon">🐾</span>
+                <span class="gnb-logo-text">반려동물 모니터링</span>
+            </a>
+        </div>
+
+        <nav class="gnb-nav" aria-label="주 네비게이션">
+            <ul class="gnb-menu" role="menubar">
+                <li class="gnb-item" role="none">
+                    <a href="dashboard.html" class="gnb-link" role="menuitem">Home</a>
+                </li>
+                <li class="gnb-item has-dropdown" role="none">
+                    <a href="gallery.html" class="gnb-link" role="menuitem" aria-haspopup="true">
+                        Activity <span class="gnb-arrow">▾</span>
+                    </a>
+                    <ul class="gnb-dropdown" role="menu" aria-label="Activity 하위 메뉴">
+                        <li role="none">
+                            <a href="gallery.html" class="gnb-dropdown-item" role="menuitem">
+                                <span class="gnb-dropdown-icon">📷</span> 사진첩
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a href="gallery.html" class="gnb-dropdown-item" role="menuitem">
+                                <span class="gnb-dropdown-icon">📝</span> 기록장
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="gnb-item" role="none">
+                    <a href="https://www.happypet.co.kr" target="_blank" rel="noopener noreferrer" class="gnb-link" role="menuitem">
+                        Pet News <span class="gnb-external">↗</span>
+                    </a>
+                </li>
+                <li class="gnb-item has-dropdown" role="none">
+                    <button type="button" class="gnb-link active" role="menuitem" aria-haspopup="true" aria-expanded="false">
+                        Support <span class="gnb-arrow">▾</span>
+                    </button>
+                    <ul class="gnb-dropdown" role="menu" aria-label="Support 하위 메뉴">
+                        <li role="none">
+                            <a href="notice.html" class="gnb-dropdown-item" role="menuitem">
+                                <span class="gnb-dropdown-icon">📢</span> 공지사항
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a href="inquiry.html" class="gnb-dropdown-item" role="menuitem">
+                                <span class="gnb-dropdown-icon">💬</span> 1:1 문의
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="gnb-actions">
+            <button type="button" class="btn btn-theme" id="themeToggle" title="테마 전환">🌙</button>
+            <a href="settings.html" class="gnb-mypage-btn" title="마이페이지" aria-label="마이페이지">
+                👤
+                <span class="gnb-mypage-tooltip">마이페이지</span>
+            </a>
+            <div class="gnb-divider" aria-hidden="true"></div>
+            <button type="button" class="gnb-logout-btn" id="logoutBtn">로그아웃</button>
+            <button type="button" class="btn-hamburger" id="mobileMenuBtn" aria-label="메뉴 열기" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ===== 모바일 드로어 ===== -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+    <nav class="mobile-nav-drawer" id="mobileNavDrawer" aria-label="모바일 메뉴">
+        <div class="mobile-nav-top">
+            <span class="mobile-nav-brand">🐾 반려동물 모니터링</span>
+            <button type="button" class="mobile-nav-close" id="mobileNavClose" aria-label="메뉴 닫기">✕</button>
+        </div>
+        <div class="mobile-nav-links">
+            <a href="dashboard.html" class="mobile-nav-item">
+                <span class="mobile-nav-icon">🏠</span> Home
+            </a>
+            <div class="mobile-nav-accordion">
+                <button type="button" class="mobile-nav-item mobile-accordion-trigger" data-target="mobileActivityMenu">
+                    <span class="mobile-nav-icon">📸</span>
+                    <span style="flex:1;text-align:left;">Activity</span>
+                    <span class="mobile-accordion-arrow">▾</span>
+                </button>
+                <div class="mobile-accordion-panel" id="mobileActivityMenu">
+                    <a href="gallery.html" class="mobile-nav-sub-item"><span class="mobile-nav-icon">📷</span> 사진첩</a>
+                    <a href="gallery.html" class="mobile-nav-sub-item"><span class="mobile-nav-icon">📝</span> 기록장</a>
+                </div>
+            </div>
+            <a href="https://www.happypet.co.kr" target="_blank" rel="noopener noreferrer" class="mobile-nav-item">
+                <span class="mobile-nav-icon">🐶</span>
+                <span style="flex:1;">Pet News</span>
+                <span style="font-size:0.75rem;opacity:0.5;">↗</span>
+            </a>
+            <div class="mobile-nav-accordion">
+                <button type="button" class="mobile-nav-item active mobile-accordion-trigger" data-target="mobileSupportMenu">
+                    <span class="mobile-nav-icon">🛎️</span>
+                    <span style="flex:1;text-align:left;">Support</span>
+                    <span class="mobile-accordion-arrow">▾</span>
+                </button>
+                <div class="mobile-accordion-panel open" id="mobileSupportMenu">
+                    <a href="notice.html" class="mobile-nav-sub-item"><span class="mobile-nav-icon">📢</span> 공지사항</a>
+                    <a href="inquiry.html" class="mobile-nav-sub-item" style="color:var(--primary);font-weight:600;"><span class="mobile-nav-icon">💬</span> 1:1 문의</a>
+                </div>
+            </div>
+            <a href="settings.html" class="mobile-nav-item">
+                <span class="mobile-nav-icon">👤</span> 마이페이지
+            </a>
+        </div>
+        <div class="mobile-nav-theme-row">
+            <span class="mobile-nav-theme-label">화면 테마</span>
+            <button type="button" class="btn btn-theme" id="themeToggleMobile" title="테마 전환">🌙</button>
+        </div>
+        <div class="mobile-nav-footer">
+            <button type="button" class="mobile-nav-item logout" id="logoutBtnMobile" style="width:100%;">
+                <span class="mobile-nav-icon">🚪</span> 로그아웃
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== 페이지 본문 ===== -->
+    <main class="support-page">
+        <div class="support-page-header">
+            <h1>💬 1:1 문의</h1>
+            <p>궁금한 점이나 불편한 사항을 남겨주세요. 빠르게 답변드리겠습니다.</p>
+        </div>
+
+        <div class="inquiry-page-content">
+
+            <!-- 문의 작성 폼 -->
+            <div class="inquiry-form-card">
+                <h2>✏️ 문의 작성</h2>
+
+                <div class="inquiry-success-banner" id="inquirySuccessBanner">
+                    ✅ 문의가 정상적으로 접수되었습니다. 빠른 시일 내에 답변드리겠습니다.
+                </div>
+
+                <form class="inquiry-form" id="inquiryForm" novalidate>
+                    <div class="form-group">
+                        <label for="inquiryCategory">문의 유형</label>
+                        <select id="inquiryCategory" required>
+                            <option value="" disabled selected>문의 유형을 선택해주세요</option>
+                            <option value="camera">📹 카메라 / 영상 관련</option>
+                            <option value="ai">🤖 AI 챗봇 관련</option>
+                            <option value="account">👤 계정 / 로그인 관련</option>
+                            <option value="notification">🔔 알림 / 메일 관련</option>
+                            <option value="service">⚙️ 서비스 이용 관련</option>
+                            <option value="other">💬 기타</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inquiryTitle">제목</label>
+                        <input type="text" id="inquiryTitle" placeholder="문의 제목을 입력해주세요" maxlength="100" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inquiryContent">문의 내용</label>
+                        <textarea id="inquiryContent" rows="6" placeholder="문의 내용을 자세히 입력해주세요.&#10;&#10;• 어떤 상황에서 문제가 발생했나요?&#10;• 사용 중인 브라우저/기기는 무엇인가요?&#10;• 오류 메시지가 있다면 함께 적어주세요." maxlength="2000" required></textarea>
+                        <div style="text-align:right; font-size:0.75rem; color:var(--text-secondary); margin-top:4px;">
+                            <span id="contentCount">0</span> / 2000
+                        </div>
+                    </div>
+
+                    <div id="inquiryFormError" class="error-message" style="display:none;"></div>
+
+                    <div class="inquiry-form-note">
+                        💡 답변은 마이페이지에 설정된 이메일로도 발송됩니다. (설정 &gt; 수신 메일 주소)
+                        평균 답변 시간: 영업일 기준 1~2일
+                    </div>
+
+                    <div class="inquiry-form-actions">
+                        <button type="button" class="btn btn-secondary" id="inquiryResetBtn">초기화</button>
+                        <button type="submit" class="btn btn-primary" id="inquirySubmitBtn">
+                            📨 문의 접수
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 내 문의 내역 -->
+            <div class="inquiry-history-card">
+                <div class="inquiry-history-header">
+                    📋 내 문의 내역
+                </div>
+                <div class="inquiry-history-list" id="inquiryHistoryList">
+                    <!-- JS로 렌더링 -->
+                </div>
+                <div class="inquiry-history-empty" id="inquiryHistoryEmpty" style="display:none;">
+                    <div class="inquiry-history-empty-icon">💬</div>
+                    <p>아직 문의 내역이 없습니다.</p>
+                    <p style="font-size:0.8rem; margin-top:6px; opacity:0.7;">위 양식을 통해 첫 번째 문의를 남겨보세요!</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ===== 플로팅 AI 챗봇 ===== -->
+    <div class="chat-float" role="complementary" aria-label="AI 반려동물 상담">
+        <div class="chat-float-popup" id="chatFloatPopup" role="dialog" aria-label="AI 반려동물 상담" aria-hidden="true">
+            <div class="chat-float-header">
+                <div class="chat-float-title">
+                    <span class="chat-float-title-icon">🤖</span>
+                    <div>
+                        <div class="chat-float-title-text">AI 반려동물 상담</div>
+                        <div class="chat-float-title-sub">무엇이든 물어보세요!</div>
+                    </div>
+                </div>
+                <button type="button" class="chat-float-close" id="chatFloatClose" aria-label="챗봇 닫기">✕</button>
+            </div>
+            <div class="chat-float-messages" id="chatbotMessages">
+                <div class="chatbot-message bot-message">
+                    <div class="message-avatar">🤖</div>
+                    <div class="message-content">
+                        <p>안녕하세요! 🐾 반려동물 관련 질문이 있으시면 무엇이든 물어보세요.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-float-input">
+                <input type="text" id="chatbotInput" placeholder="반려동물에 대해 물어보세요..." maxlength="500" autocomplete="off">
+                <button type="button" class="chat-float-send" id="chatbotSendBtn">전송</button>
+            </div>
+        </div>
+        <button type="button" class="chat-float-btn" id="chatFloatBtn" aria-label="AI 반려동물 상담 열기" aria-expanded="false">
+            <svg class="paw-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">
+                <ellipse cx="23" cy="33" rx="12" ry="10" transform="rotate(-20 23 33)"/>
+                <ellipse cx="41" cy="22" rx="11" ry="9.5"/>
+                <ellipse cx="60" cy="22" rx="11" ry="9.5"/>
+                <ellipse cx="78" cy="33" rx="12" ry="10" transform="rotate(20 78 33)"/>
+                <path d="M50 88 C34 88 18 74 18 57 C18 45 27 39 38 39 C43 39 47 41 50 46 C53 41 57 39 62 39 C73 39 82 45 82 57 C82 74 66 88 50 88Z"/>
+            </svg>
+            <span class="chat-float-badge">AI</span>
+        </button>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/chatbot.js"></script>
+    <script>
+        // ── 인증 확인 ─────────────────────────────────────────
+        if (!auth.isLoggedIn()) location.href = 'index.html';
+
+        // ── 테마 ──────────────────────────────────────────────
+        (function() {
+            const isDark = theme.get() === theme.DARK;
+            document.getElementById('themeToggle').textContent = isDark ? '🌙' : '☀️';
+            document.getElementById('themeToggleMobile').textContent = isDark ? '🌙' : '☀️';
+        })();
+        document.getElementById('themeToggle').addEventListener('click', function() {
+            const next = theme.toggle();
+            this.textContent = next === theme.DARK ? '🌙' : '☀️';
+            document.getElementById('themeToggleMobile').textContent = next === theme.DARK ? '🌙' : '☀️';
+        });
+        document.getElementById('themeToggleMobile').addEventListener('click', function() {
+            const next = theme.toggle();
+            this.textContent = next === theme.DARK ? '🌙' : '☀️';
+            document.getElementById('themeToggle').textContent = next === theme.DARK ? '🌙' : '☀️';
+        });
+
+        // ── 로그아웃 ───────────────────────────────────────────
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            if (confirm('로그아웃 하시겠습니까?')) auth.logout();
+        });
+        document.getElementById('logoutBtnMobile').addEventListener('click', function() {
+            auth.logout();
+        });
+
+        // ── 모바일 메뉴 ────────────────────────────────────────
+        const mobileMenuBtn  = document.getElementById('mobileMenuBtn');
+        const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+        const mobileNavDrawer  = document.getElementById('mobileNavDrawer');
+        const mobileNavClose   = document.getElementById('mobileNavClose');
+        function openMobileMenu() {
+            mobileNavOverlay.classList.add('open'); mobileNavDrawer.classList.add('open');
+            mobileMenuBtn.classList.add('active'); mobileMenuBtn.setAttribute('aria-expanded', 'true');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeMobileMenu() {
+            mobileNavOverlay.classList.remove('open'); mobileNavDrawer.classList.remove('open');
+            mobileMenuBtn.classList.remove('active'); mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+        }
+        mobileMenuBtn.addEventListener('click', openMobileMenu);
+        mobileNavClose.addEventListener('click', closeMobileMenu);
+        mobileNavOverlay.addEventListener('click', closeMobileMenu);
+
+        // ── 모바일 아코디언 ────────────────────────────────────
+        document.querySelectorAll('.mobile-accordion-trigger').forEach(function(trigger) {
+            trigger.addEventListener('click', function() {
+                const panel = document.getElementById(this.dataset.target);
+                const arrow = this.querySelector('.mobile-accordion-arrow');
+                const isOpen = panel.classList.contains('open');
+                document.querySelectorAll('.mobile-accordion-panel').forEach(p => p.classList.remove('open'));
+                document.querySelectorAll('.mobile-accordion-arrow').forEach(a => a.style.transform = '');
+                if (!isOpen) { panel.classList.add('open'); arrow.style.transform = 'rotate(180deg)'; }
+            });
+        });
+        (function() {
+            const t = document.querySelector('[data-target="mobileSupportMenu"]');
+            if (t) t.querySelector('.mobile-accordion-arrow').style.transform = 'rotate(180deg)';
+        })();
+
+        // ── 데스크탑 드롭다운 ──────────────────────────────────
+        document.querySelectorAll('.gnb-item.has-dropdown > .gnb-link').forEach(function(el) {
+            el.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const item = this.closest('.gnb-item');
+                const isOpen = item.classList.contains('open');
+                document.querySelectorAll('.gnb-item.has-dropdown').forEach(function(i) {
+                    i.classList.remove('open');
+                    i.querySelector('.gnb-link').setAttribute('aria-expanded', 'false');
+                });
+                if (!isOpen) { item.classList.add('open'); this.setAttribute('aria-expanded', 'true'); }
+            });
+        });
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.gnb-item.has-dropdown').forEach(function(i) {
+                i.classList.remove('open');
+                i.querySelector('.gnb-link').setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        // ── 글자 수 카운터 ─────────────────────────────────────
+        document.getElementById('inquiryContent').addEventListener('input', function() {
+            document.getElementById('contentCount').textContent = this.value.length;
+        });
+
+        // ── 초기화 버튼 ───────────────────────────────────────
+        document.getElementById('inquiryResetBtn').addEventListener('click', function() {
+            document.getElementById('inquiryForm').reset();
+            document.getElementById('contentCount').textContent = '0';
+            document.getElementById('inquiryFormError').style.display = 'none';
+        });
+
+        // ── 문의 제출 ──────────────────────────────────────────
+        document.getElementById('inquiryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const category = document.getElementById('inquiryCategory').value;
+            const title    = document.getElementById('inquiryTitle').value.trim();
+            const content  = document.getElementById('inquiryContent').value.trim();
+            const errorEl  = document.getElementById('inquiryFormError');
+
+            errorEl.style.display = 'none';
+            if (!category) { errorEl.textContent = '문의 유형을 선택해주세요.'; errorEl.style.display = 'block'; return; }
+            if (!title)    { errorEl.textContent = '제목을 입력해주세요.';    errorEl.style.display = 'block'; return; }
+            if (content.length < 10) { errorEl.textContent = '문의 내용을 10자 이상 입력해주세요.'; errorEl.style.display = 'block'; return; }
+
+            // LocalStorage에 저장
+            const inquiries = JSON.parse(localStorage.getItem('inquiries') || '[]');
+            const categoryLabels = {
+                camera: '📹 카메라 / 영상', ai: '🤖 AI 챗봇', account: '👤 계정 / 로그인',
+                notification: '🔔 알림 / 메일', service: '⚙️ 서비스 이용', other: '💬 기타'
+            };
+            inquiries.unshift({
+                id: Date.now(),
+                category: categoryLabels[category] || category,
+                title, content,
+                status: 'waiting',
+                createdAt: new Date().toISOString(),
+                answer: null
+            });
+            localStorage.setItem('inquiries', JSON.stringify(inquiries));
+
+            // 성공 처리
+            this.reset();
+            document.getElementById('contentCount').textContent = '0';
+            const banner = document.getElementById('inquirySuccessBanner');
+            banner.classList.add('show');
+            setTimeout(() => banner.classList.remove('show'), 4000);
+
+            renderHistory();
+        });
+
+        // ── 문의 내역 렌더링 ───────────────────────────────────
+        function renderHistory() {
+            const inquiries = JSON.parse(localStorage.getItem('inquiries') || '[]');
+            const list  = document.getElementById('inquiryHistoryList');
+            const empty = document.getElementById('inquiryHistoryEmpty');
+
+            if (inquiries.length === 0) {
+                list.innerHTML = '';
+                empty.style.display = 'block';
+                return;
+            }
+            empty.style.display = 'none';
+
+            list.innerHTML = inquiries.map(function(item) {
+                const date = new Date(item.createdAt);
+                const dateStr = date.getFullYear() + '.' +
+                    String(date.getMonth()+1).padStart(2,'0') + '.' +
+                    String(date.getDate()).padStart(2,'0');
+
+                const statusBadge = item.status === 'done'
+                    ? '<span class="inquiry-status-badge inquiry-status-done">답변 완료</span>'
+                    : '<span class="inquiry-status-badge inquiry-status-waiting">답변 대기</span>';
+
+                const answerHtml = item.answer
+                    ? `<div class="inquiry-detail-answer">
+                         <div class="inquiry-detail-answer-label">💬 운영자 답변</div>
+                         ${escHtml(item.answer)}
+                       </div>`
+                    : '<div style="font-size:0.8rem;color:var(--text-secondary);margin-top:8px;">⏳ 담당자가 검토 중입니다. 영업일 기준 1~2일 내에 답변드리겠습니다.</div>';
+
+                return `<div class="inquiry-history-item" onclick="this.classList.toggle('open')">
+                    <div class="inquiry-history-item-top">
+                        ${statusBadge}
+                        <div class="inquiry-history-title">${escHtml(item.title)}</div>
+                    </div>
+                    <div class="inquiry-history-meta">
+                        <span>${escHtml(item.category)}</span>
+                        <span class="notice-item-meta-dot" style="display:inline-block;"></span>
+                        <span>${dateStr}</span>
+                    </div>
+                    <div class="inquiry-history-detail">
+                        <div class="inquiry-detail-content">${escHtml(item.content)}</div>
+                        ${answerHtml}
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function escHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/\n/g, '<br>');
+        }
+
+        // 페이지 로드 시 내역 렌더링
+        renderHistory();
+    </script>
+</body>
+</html>

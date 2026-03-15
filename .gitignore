@@ -1,0 +1,13 @@
+# API 키 설정 파일 (보안)
+js/config.js
+
+# 환경 변수
+.env
+.env.local
+
+# 로그 파일
+*.log
+
+# OS 파일
+.DS_Store
+Thumbs.db

@@ -1,0 +1,109 @@
+/**
+ * 기록장 저장소 (localStorage 기반)
+ * 사진첩, 일기, 앱 설정 데이터 관리
+ */
+
+const storage = {
+    PHOTOS_KEY: 'petMonitor_photos',
+    DIARY_KEY: 'petMonitor_diary',
+    SETTINGS_KEY: 'petMonitor_settings',
+
+    getSettings() {
+        try {
+            const data = localStorage.getItem(this.SETTINGS_KEY);
+            const defaults = {
+                mailNotificationEnabled: false,
+                mailRecipient: '',
+                mailDelaySeconds: 30,
+                motorSpeed: 'medium',
+                petName: ''
+            };
+            return data ? { ...defaults, ...JSON.parse(data) } : defaults;
+        } catch {
+            return {
+                mailNotificationEnabled: false,
+                mailRecipient: '',
+                mailDelaySeconds: 30,
+                motorSpeed: 'medium',
+                petName: ''
+            };
+        }
+    },
+
+    saveSettings(settings) {
+        const current = this.getSettings();
+        localStorage.setItem(this.SETTINGS_KEY, JSON.stringify({ ...current, ...settings }));
+    },
+
+    getPhotos() {
+        try {
+            const data = localStorage.getItem(this.PHOTOS_KEY);
+            return data ? JSON.parse(data) : [];
+        } catch {
+            return [];
+        }
+    },
+
+    savePhoto(dataUrl, memo = '') {
+        const photos = this.getPhotos();
+        const photo = {
+            id: Date.now().toString(),
+            dataUrl,
+            memo,
+            createdAt: new Date().toISOString()
+        };
+        photos.unshift(photo);
+        localStorage.setItem(this.PHOTOS_KEY, JSON.stringify(photos));
+        return photo;
+    },
+
+    deletePhoto(id) {
+        const photos = this.getPhotos().filter(p => p.id !== id);
+        localStorage.setItem(this.PHOTOS_KEY, JSON.stringify(photos));
+    },
+
+    updatePhotoMemo(id, memo) {
+        const photos = this.getPhotos();
+        const idx = photos.findIndex(p => p.id === id);
+        if (idx >= 0) {
+            photos[idx].memo = memo;
+            localStorage.setItem(this.PHOTOS_KEY, JSON.stringify(photos));
+        }
+    },
+
+    getDiaryEntries() {
+        try {
+            const data = localStorage.getItem(this.DIARY_KEY);
+            return data ? JSON.parse(data) : [];
+        } catch {
+            return [];
+        }
+    },
+
+    saveDiaryEntry(content) {
+        const entries = this.getDiaryEntries();
+        const entry = {
+            id: Date.now().toString(),
+            content,
+            createdAt: new Date().toISOString()
+        };
+        entries.unshift(entry);
+        localStorage.setItem(this.DIARY_KEY, JSON.stringify(entries));
+        return entry;
+    },
+
+    deleteDiaryEntry(id) {
+        const entries = this.getDiaryEntries().filter(e => e.id !== id);
+        localStorage.setItem(this.DIARY_KEY, JSON.stringify(entries));
+    },
+
+    updateDiaryEntry(id, content) {
+        const entries = this.getDiaryEntries();
+        const idx = entries.findIndex(e => e.id === id);
+        if (idx >= 0) {
+            entries[idx].content = content;
+            entries[idx].updatedAt = new Date().toISOString();
+            localStorage.setItem(this.DIARY_KEY, JSON.stringify(entries));
+        }
+    }
+};

@@ -1,0 +1,109 @@
+/**
+ * 설정 페이지
+ */
+
+// 인증 체크
+if (!auth.isLoggedIn()) {
+    window.location.href = 'index.html';
+}
+
+// 로그아웃
+document.getElementById('logoutBtn').addEventListener('click', () => {
+    auth.logout();
+    window.location.href = 'index.html';
+});
+
+// 사용자 정보 표시
+document.getElementById('displayUsername').value = auth.getUsername() || '-';
+
+// 설정 로드 및 저장
+const s = storage.getSettings();
+document.getElementById('petName').value = s.petName || '';
+document.getElementById('mailNotificationSwitch').checked = s.mailNotificationEnabled;
+document.getElementById('mailRecipient').value = s.mailRecipient || '';
+document.getElementById('mailDelay').value = String(s.mailDelaySeconds);
+document.getElementById('motorSpeed').value = s.motorSpeed || 'medium';
+
+// 설정 변경 시 저장
+function saveAppSettings() {
+    storage.saveSettings({
+        petName: document.getElementById('petName').value.trim(),
+        mailNotificationEnabled: document.getElementById('mailNotificationSwitch').checked,
+        mailRecipient: document.getElementById('mailRecipient').value.trim(),
+        mailDelaySeconds: parseInt(document.getElementById('mailDelay').value, 10),
+        motorSpeed: document.getElementById('motorSpeed').value
+    });
+}
+
+document.getElementById('petName').addEventListener('change', saveAppSettings);
+document.getElementById('petName').addEventListener('blur', saveAppSettings);
+document.getElementById('mailNotificationSwitch').addEventListener('change', saveAppSettings);
+document.getElementById('mailRecipient').addEventListener('change', saveAppSettings);
+document.getElementById('mailRecipient').addEventListener('blur', saveAppSettings);
+document.getElementById('mailDelay').addEventListener('change', saveAppSettings);
+document.getElementById('motorSpeed').addEventListener('change', saveAppSettings);
+
+// 테마 토글
+document.getElementById('themeToggle').addEventListener('click', () => {
+    const next = theme.toggle();
+    document.getElementById('themeToggle').textContent = next === theme.DARK ? '🌙' : '☀️';
+});
+document.getElementById('themeToggle').textContent = theme.get() === theme.DARK ? '🌙' : '☀️';
+
+// 테마 설정 버튼
+document.querySelectorAll('.theme-option').forEach(btn => {
+    btn.addEventListener('click', () => {
+        theme.set(btn.dataset.theme);
+        document.getElementById('themeToggle').textContent = btn.dataset.theme === theme.DARK ? '🌙' : '☀️';
+        document.querySelectorAll('.theme-option').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    });
+    if (btn.dataset.theme === theme.get()) btn.classList.add('active');
+});
+
+// 비밀번호 변경 (데모용 - localStorage에 저장하지 않음, 세션 내에서만)
+document.getElementById('passwordForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const current = document.getElementById('currentPassword').value;
+    const newPw = document.getElementById('newPassword').value;
+    const confirm = document.getElementById('confirmPassword').value;
+    const errorEl = document.getElementById('passwordError');
+    const successEl = document.getElementById('passwordSuccess');
+
+    errorEl.style.display = 'none';
+    successEl.style.display = 'none';
+
+    // 데모: admin의 현재 비밀번호는 1234
+    const username = auth.getUsername();
+    const currentValid = (username === 'admin' && current === '1234');
+
+    if (!currentValid) {
+        errorEl.textContent = '현재 비밀번호가 올바르지 않습니다.';
+        errorEl.style.display = 'block';
+        return;
+    }
+
+    if (newPw !== confirm) {
+        errorEl.textContent = '새 비밀번호가 일치하지 않습니다.';
+        errorEl.style.display = 'block';
+        return;
+    }
+
+    if (newPw.length < 4) {
+        errorEl.textContent = '비밀번호는 4자 이상이어야 합니다.';
+        errorEl.style.display = 'block';
+        return;
+    }
+
+    // 데모: 실제로는 서버 API 호출 필요. 여기서는 auth.demoUsers 업데이트
+    if (auth.demoUsers) {
+        auth.demoUsers[username] = newPw;
+    }
+
+    successEl.textContent = '비밀번호가 변경되었습니다. (데모: 새로 로그인 시 적용)';
+    successEl.style.display = 'block';
+    successEl.style.color = 'var(--success)';
+
+    this.reset();
+});

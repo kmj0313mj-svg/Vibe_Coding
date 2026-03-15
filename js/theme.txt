@@ -1,0 +1,38 @@
+/**
+ * 다크모드 / 라이트모드 테마 전환
+ */
+
+const theme = {
+    KEY: 'petMonitor_theme',
+    DARK: 'dark',
+    LIGHT: 'light',
+
+    init() {
+        const saved = localStorage.getItem(this.KEY) || this.DARK;
+        this.apply(saved);
+        return saved;
+    },
+
+    get() {
+        return document.documentElement.getAttribute('data-theme') || this.DARK;
+    },
+
+    set(mode) {
+        if (mode !== this.DARK && mode !== this.LIGHT) return;
+        localStorage.setItem(this.KEY, mode);
+        this.apply(mode);
+    },
+
+    toggle() {
+        const next = this.get() === this.DARK ? this.LIGHT : this.DARK;
+        this.set(next);
+        return next;
+    },
+
+    apply(mode) {
+        document.documentElement.setAttribute('data-theme', mode);
+    }
+};
+
+// 페이지 로드 시 즉시 적용 (깜빡임 방지)
+theme.init();

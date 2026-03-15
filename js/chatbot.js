@@ -1,0 +1,239 @@
+// ===== AI 챗봇 - 플로팅 버전 =====
+
+const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
+
+function getApiEndpoint() {
+    if (typeof API_CONFIG !== 'undefined' && API_CONFIG.MODE === 'cloudflare') {
+        return API_CONFIG.CLOUDFLARE_WORKER_URL;
+    }
+    return OPENAI_API_URL;
+}
+
+function getApiKey() {
+    if (typeof API_CONFIG !== 'undefined' && API_CONFIG.MODE === 'cloudflare') {
+        return null;
+    }
+    if (typeof API_CONFIG !== 'undefined' && API_CONFIG.MODE === 'server') {
+        return API_CONFIG.OPENAI_API_KEY || '';
+    }
+    return localStorage.getItem('openai_api_key') || '';
+}
+
+function isApiKeyConfigured() {
+    if (typeof API_CONFIG !== 'undefined' && API_CONFIG.MODE === 'cloudflare') {
+        return API_CONFIG.CLOUDFLARE_WORKER_URL &&
+               API_CONFIG.CLOUDFLARE_WORKER_URL !== 'https://your-worker.workers.dev';
+    }
+    const apiKey = getApiKey();
+    return apiKey &&
+           apiKey.trim().length > 0 &&
+           apiKey !== 'your-api-key-here' &&
+           apiKey !== 'YOUR_API_KEY_HERE';
+}
+
+// ── 상태 ──────────────────────────────────────────────────────
+let isChatOpen = false;
+let isProcessing = false;
+let conversationHistory = [
+    {
+        role: "system",
+        content: "당신은 반려동물 전문 상담사입니다. 반려동물의 건강, 행동, 훈련, 영양 등에 대해 친절하고 전문적으로 답변해주세요. 답변은 한국어로 해주세요."
+    }
+];
+
+// ── DOM 요소 ───────────────────────────────────────────────────
+const chatFloatBtn  = document.getElementById('chatFloatBtn');
+const chatFloatPopup = document.getElementById('chatFloatPopup');
+const chatFloatClose = document.getElementById('chatFloatClose');
+const chatbotMessages = document.getElementById('chatbotMessages');
+const chatbotInput  = document.getElementById('chatbotInput');
+const chatbotSendBtn = document.getElementById('chatbotSendBtn');
+
+// ── 팝업 열기 / 닫기 ──────────────────────────────────────────
+function openChat() {
+    isChatOpen = true;
+    chatFloatPopup.classList.add('open');
+    chatFloatBtn.classList.add('open');
+    chatFloatBtn.setAttribute('aria-expanded', 'true');
+    chatFloatPopup.setAttribute('aria-hidden', 'false');
+    // 약간 딜레이 후 포커스 (애니메이션 완료 후)
+    setTimeout(() => chatbotInput && chatbotInput.focus(), 250);
+}
+
+function closeChat() {
+    isChatOpen = false;
+    chatFloatPopup.classList.remove('open');
+    chatFloatBtn.classList.remove('open');
+    chatFloatBtn.setAttribute('aria-expanded', 'false');
+    chatFloatPopup.setAttribute('aria-hidden', 'true');
+}
+
+function toggleChat() {
+    isChatOpen ? closeChat() : openChat();
+}
+
+if (chatFloatBtn)  chatFloatBtn.addEventListener('click', toggleChat);
+if (chatFloatClose) chatFloatClose.addEventListener('click', closeChat);
+
+// ESC 키로 닫기
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isChatOpen) closeChat();
+});
+
+// ── 메시지 추가 ────────────────────────────────────────────────
+function addMessage(content, isUser = false) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `chatbot-message ${isUser ? 'user-message' : 'bot-message'}`;
+
+    const avatar = document.createElement('div');
+    avatar.className = 'message-avatar';
+    avatar.textContent = isUser ? '👤' : '🤖';
+
+    const messageContent = document.createElement('div');
+    messageContent.className = 'message-content';
+
+    const p = document.createElement('p');
+    p.textContent = content;
+    messageContent.appendChild(p);
+
+    messageDiv.appendChild(avatar);
+    messageDiv.appendChild(messageContent);
+
+    chatbotMessages.appendChild(messageDiv);
+    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+
+    return messageDiv;
+}
+
+function addLoadingMessage() {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'chatbot-message bot-message';
+    messageDiv.id = 'chat-loading';
+
+    const avatar = document.createElement('div');
+    avatar.className = 'message-avatar';
+    avatar.textContent = '🤖';
+
+    const messageContent = document.createElement('div');
+    messageContent.className = 'message-content';
+    messageContent.innerHTML = '<div class="message-loading"><span></span><span></span><span></span></div>';
+
+    messageDiv.appendChild(avatar);
+    messageDiv.appendChild(messageContent);
+    chatbotMessages.appendChild(messageDiv);
+    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+
+    return messageDiv;
+}
+
+function removeLoadingMessage() {
+    const el = document.getElementById('chat-loading');
+    if (el) el.remove();
+}
+
+// ── OpenAI API 호출 ────────────────────────────────────────────
+async function sendToOpenAI(userMessage) {
+    const apiEndpoint = getApiEndpoint();
+    const apiKey = getApiKey();
+
+    if (!apiKey && (!API_CONFIG || API_CONFIG.MODE !== 'cloudflare')) {
+        throw new Error('API 키가 설정되지 않았습니다. 설정 페이지에서 API 키를 입력해주세요.');
+    }
+
+    conversationHistory.push({ role: "user", content: userMessage });
+
+    const headers = { 'Content-Type': 'application/json' };
+    if (apiKey) headers['Authorization'] = `Bearer ${apiKey}`;
+
+    const response = await fetch(apiEndpoint, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+            model: "gpt-3.5-turbo",
+            messages: conversationHistory,
+            temperature: 0.7,
+            max_tokens: 500
+        })
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error?.message || `API 오류: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const assistantMessage = data.choices[0].message.content;
+
+    conversationHistory.push({ role: "assistant", content: assistantMessage });
+
+    if (conversationHistory.length > 21) {
+        conversationHistory = [conversationHistory[0], ...conversationHistory.slice(-20)];
+    }
+
+    return assistantMessage;
+}
+
+// ── 메시지 전송 ────────────────────────────────────────────────
+async function handleSendMessage() {
+    if (!chatbotInput) return;
+    const message = chatbotInput.value.trim();
+    if (!message || isProcessing) return;
+
+    // 팝업이 닫혀있으면 열기
+    if (!isChatOpen) openChat();
+
+    addMessage(message, true);
+    chatbotInput.value = '';
+
+    isProcessing = true;
+    chatbotInput.disabled = true;
+    chatbotSendBtn.disabled = true;
+
+    addLoadingMessage();
+
+    try {
+        const response = await sendToOpenAI(message);
+        removeLoadingMessage();
+        addMessage(response, false);
+    } catch (error) {
+        removeLoadingMessage();
+        addMessage(`죄송합니다. 오류가 발생했습니다: ${error.message}`, false);
+    } finally {
+        isProcessing = false;
+        chatbotInput.disabled = false;
+        chatbotSendBtn.disabled = false;
+        chatbotInput.focus();
+    }
+}
+
+if (chatbotSendBtn) chatbotSendBtn.addEventListener('click', handleSendMessage);
+if (chatbotInput) {
+    chatbotInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSendMessage();
+        }
+    });
+}
+
+// ── 초기화 ────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+    if (!isApiKeyConfigured()) {
+        if (typeof API_CONFIG !== 'undefined') {
+            if (API_CONFIG.MODE === 'cloudflare') {
+                addMessage('⚠️ Cloudflare Worker가 설정되지 않았습니다. 관리자에게 문의해주세요.', false);
+            } else if (API_CONFIG.MODE === 'server') {
+                addMessage('⚠️ 서버 API 키가 설정되지 않았습니다. 관리자에게 문의해주세요.', false);
+            } else {
+                addMessage('⚠️ OpenAI API 키가 설정되지 않았습니다. 설정 페이지에서 API 키를 입력해주세요.', false);
+            }
+        } else {
+            addMessage('⚠️ OpenAI API 키가 설정되지 않았습니다. 설정 페이지에서 API 키를 입력해주세요.', false);
+        }
+    } else {
+        if (typeof API_CONFIG !== 'undefined' &&
+            (API_CONFIG.MODE === 'server' || API_CONFIG.MODE === 'cloudflare')) {
+            addMessage('안녕하세요! 🐾 반려동물에 대해 궁금한 것이 있으시면 언제든 물어보세요!', false);
+        }
+    }
+});

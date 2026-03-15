@@ -1,0 +1,155 @@
+/**
+ * 커뮤니티/기록장 페이지
+ */
+
+if (!auth.isLoggedIn()) {
+    window.location.href = 'index.html';
+}
+
+document.getElementById('logoutBtn').addEventListener('click', () => {
+    auth.logout();
+    window.location.href = 'index.html';
+});
+
+// ===== 테마 토글 =====
+document.getElementById('themeToggle').addEventListener('click', () => {
+    const next = theme.toggle();
+    document.getElementById('themeToggle').textContent = next === theme.DARK ? '🌙' : '☀️';
+    document.getElementById('themeToggle').title = next === theme.DARK ? '라이트 모드로 전환' : '다크 모드로 전환';
+});
+document.getElementById('themeToggle').textContent = theme.get() === theme.DARK ? '🌙' : '☀️';
+document.getElementById('themeToggle').title = theme.get() === theme.DARK ? '라이트 모드로 전환' : '다크 모드로 전환';
+
+// ===== 탭 전환 =====
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.gallery-tab-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    });
+});
+
+// ===== 사진첩 =====
+function renderPhotos() {
+    const photos = storage.getPhotos();
+    const grid = document.getElementById('photoGrid');
+    const empty = document.getElementById('photoEmpty');
+
+    grid.innerHTML = '';
+    empty.style.display = photos.length ? 'none' : 'flex';
+
+    photos.forEach(photo => {
+        const card = document.createElement('div');
+        card.className = 'photo-card';
+        card.innerHTML = `
+            <img src="${photo.dataUrl}" alt="캡처">
+            <div class="photo-card-info">
+                <span class="photo-date">${formatDate(photo.createdAt)}</span>
+                ${photo.memo ? `<span class="photo-memo">${escapeHtml(photo.memo)}</span>` : ''}
+            </div>
+        `;
+        card.addEventListener('click', () => openPhotoModal(photo));
+        grid.appendChild(card);
+    });
+}
+
+function formatDate(iso) {
+    const d = new Date(iso);
+    return d.toLocaleString('ko-KR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function openPhotoModal(photo) {
+    const modal = document.getElementById('photoModal');
+    document.getElementById('modalImage').src = photo.dataUrl;
+    document.getElementById('modalMemo').value = photo.memo || '';
+    document.getElementById('modalDownload').href = photo.dataUrl;
+    document.getElementById('modalDownload').download = `pet-${photo.id}.png`;
+    modal.classList.add('active');
+    modal.dataset.photoId = photo.id;
+}
+
+function closePhotoModal() {
+    document.getElementById('photoModal').classList.remove('active');
+}
+
+document.getElementById('photoModal').querySelectorAll('[data-close]').forEach(el => {
+    el.addEventListener('click', closePhotoModal);
+});
+
+document.getElementById('modalMemo').addEventListener('change', (e) => {
+    const id = document.getElementById('photoModal').dataset.photoId;
+    if (id) storage.updatePhotoMemo(id, e.target.value.trim());
+});
+
+document.getElementById('modalDelete').addEventListener('click', () => {
+    const id = document.getElementById('photoModal').dataset.photoId;
+    if (id) {
+        storage.deletePhoto(id);
+        closePhotoModal();
+        renderPhotos();
+    }
+});
+
+// ===== 일기 =====
+function renderDiary() {
+    const entries = storage.getDiaryEntries();
+    const list = document.getElementById('diaryList');
+    const empty = document.getElementById('diaryEmpty');
+
+    list.innerHTML = '';
+    empty.style.display = entries.length ? 'none' : 'flex';
+
+    entries.forEach(entry => {
+        const item = document.createElement('div');
+        item.className = 'diary-item';
+        item.innerHTML = `
+            <div class="diary-content">${escapeHtml(entry.content).replace(/\n/g, '<br>')}</div>
+            <div class="diary-meta">${formatDate(entry.createdAt)}</div>
+            <button type="button" class="diary-delete" title="삭제">🗑️</button>
+        `;
+        item.querySelector('.diary-delete').addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (confirm('이 일기를 삭제할까요?')) {
+                storage.deleteDiaryEntry(entry.id);
+                renderDiary();
+            }
+        });
+        list.appendChild(item);
+    });
+}
+
+document.getElementById('diaryAddBtn').addEventListener('click', () => {
+    const input = document.getElementById('diaryInput');
+    const content = input.value.trim();
+    if (!content) {
+        alert('일기 내용을 입력해주세요.');
+        return;
+    }
+    storage.saveDiaryEntry(content);
+    input.value = '';
+    renderDiary();
+});
+
+document.getElementById('diaryInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        document.getElementById('diaryAddBtn').click();
+    }
+});
+
+// 초기 렌더
+renderPhotos();
+renderDiary();

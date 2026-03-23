@@ -1,47 +1,47 @@
 <context>
-# Overview  
-[Provide a high-level overview of your product here. Explain what problem it solves, who it's for, and why it's valuable.]
+# 개요  
+[여기에 제품에 대한 개괄적인 설명을 작성하세요. 어떤 문제를 해결하는지, 누구를 위한 것인지, 왜 가치 있는지를 설명하세요.]
 
-# Core Features  
-[List and describe the main features of your product. For each feature, include:
-- What it does
-- Why it's important
-- How it works at a high level]
+# 핵심 기능  
+[제품의 주요 기능들을 나열하고 설명하세요. 각 기능에 대해 다음을 포함하세요:
+- 기능이 하는 일
+- 왜 중요한지
+- 개괄적인 작동 방식]
 
-# User Experience  
-[Describe the user journey and experience. Include:
-- User personas
-- Key user flows
-- UI/UX considerations]
+# 사용자 경험  
+[사용자 여정과 경험을 설명하세요. 다음을 포함하세요:
+- 사용자 페르소나
+- 주요 사용자 흐름
+- UI/UX 고려사항]
 </context>
 <PRD>
-# Technical Architecture  
-[Outline the technical implementation details:
-- System components
-- Data models
-- APIs and integrations
-- Infrastructure requirements]
+# 기술 아키텍처  
+[기술 구현 세부사항을 설명하세요:
+- 시스템 구성요소
+- 데이터 모델
+- APIs 및 연동
+- 인프라 요구사항]
 
-# Development Roadmap  
-[Break down the development process into phases:
-- MVP requirements
-- Future enhancements
-- Do not think about timelines whatsoever -- all that matters is scope and detailing exactly what needs to be build in each phase so it can later be cut up into tasks]
+# 개발 로드맵  
+[개발 과정을 단계별로 나누세요:
+- MVP 요구사항
+- 향후 개선 사항
+- 일정은 전혀 고려하지 마세요 -- 중요한 것은 범위와 각 단계에서 정확히 무엇을 만들어야 하는지를 상세히 기술하여 나중에 태스크로 분할할 수 있도록 하는 것입니다]
 
-# Logical Dependency Chain
-[Define the logical order of development:
-- Which features need to be built first (foundation)
-- Getting as quickly as possible to something usable/visible front end that works
-- Properly pacing and scoping each feature so it is atomic but can also be built upon and improved as development approaches]
+# 논리적 의존성 체인
+[개발의 논리적 순서를 정의하세요:
+- 어떤 기능을 먼저 구축해야 하는지 (foundation)
+- 작동하는 front end를 가능한 빨리 사용/확인 가능한 상태로 만들기
+- 각 기능이 원자적이면서도 점진적으로 발전 가능하도록 적절한 속도와 범위 조정]
 
-# Risks and Mitigations  
-[Identify potential risks and how they'll be addressed:
-- Technical challenges
-- Figuring out the MVP that we can build upon
-- Resource constraints]
+# 리스크 및 대응방안  
+[잠재적 리스크와 해결 방법을 파악하세요:
+- 기술적 과제
+- 발전 가능한 MVP 구성 방법
+- 리소스 제약]
 
-# Appendix  
-[Include any additional information:
-- Research findings
-- Technical specifications]
+# 부록  
+[추가 정보를 포함하세요:
+- 조사 결과
+- 기술 사양]
 </PRD>

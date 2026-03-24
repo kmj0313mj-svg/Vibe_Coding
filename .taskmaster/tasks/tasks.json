@@ -3,10 +3,10 @@
     "tasks": [
       {
         "id": "1",
-        "title": "User Authentication Setup",
-        "description": "Implement user registration and login functionality.",
-        "details": "Use HTML, CSS, and JavaScript to create a registration and login form. Store user credentials in localStorage for MVP. Ensure protected pages are inaccessible without login.",
-        "testStrategy": "Test registration and login with valid and invalid credentials. Ensure protected pages redirect to login if not authenticated.",
+        "title": "사용자 인증 설정",
+        "description": "회원가입 및 로그인 기능을 구현합니다.",
+        "details": "HTML, CSS, JavaScript를 사용해 회원가입 및 로그인 폼을 만듭니다. MVP 단계에서는 사용자 정보를 localStorage에 저장합니다. 로그인하지 않은 사용자는 보호된 페이지에 접근할 수 없도록 처리합니다.",
+        "testStrategy": "유효한 정보와 잘못된 정보로 회원가입/로그인을 테스트합니다. 로그인하지 않은 상태에서 보호된 페이지 접근 시 로그인 페이지로 리다이렉트되는지 확인합니다.",
         "priority": "high",
         "dependencies": [],
         "status": "done",
@@ -15,10 +15,10 @@
       },
       {
         "id": "2",
-        "title": "Dashboard Implementation",
-        "description": "Develop the dashboard to display pet status and provide core functionalities.",
-        "details": "Create a dashboard page using HTML and CSS. Implement pet status display, video streaming area, and buttons for capture, record, and voice output using JavaScript.",
-        "testStrategy": "Verify each button's functionality: capture, record, and voice output. Check real-time updates on the dashboard.",
+        "title": "대시보드 구현",
+        "description": "반려동물 상태를 표시하고 핵심 기능을 제공하는 대시보드를 개발합니다.",
+        "details": "HTML과 CSS로 대시보드 페이지를 만듭니다. JavaScript를 사용해 반려동물 상태 표시, 영상 스트리밍 영역, 캡처/녹화/음성 송출 버튼을 구현합니다.",
+        "testStrategy": "캡처, 녹화, 음성 송출 각 버튼의 동작을 확인합니다. 대시보드에서 실시간 업데이트가 정상적으로 반영되는지 확인합니다.",
         "priority": "high",
         "dependencies": [
           "1"
@@ -29,10 +29,10 @@
       },
       {
         "id": "3",
-        "title": "Journal and Gallery Feature",
-        "description": "Implement the journal and gallery for storing and viewing photos and diaries.",
-        "details": "Develop a page to upload, view, edit, and delete photos and diary entries. Use localStorage to save data temporarily.",
-        "testStrategy": "Test photo upload, edit, and delete functionalities. Ensure diary entries can be created, viewed, and removed.",
+        "title": "기록장 및 갤러리 기능",
+        "description": "사진과 일기를 저장하고 볼 수 있는 기록장 및 갤러리를 구현합니다.",
+        "details": "사진과 일기를 업로드, 조회, 수정, 삭제할 수 있는 페이지를 개발합니다. MVP 단계에서는 localStorage를 사용해 데이터를 임시 저장합니다.",
+        "testStrategy": "사진 업로드, 수정, 삭제 기능을 테스트합니다. 일기 작성, 조회, 삭제가 정상 동작하는지 확인합니다.",
         "priority": "medium",
         "dependencies": [
           "2"
@@ -41,65 +41,65 @@
         "subtasks": [
           {
             "id": 1,
-            "title": "Implement Photo Upload Feature",
-            "description": "Add functionality to upload photos to the gallery.",
+            "title": "사진 업로드 기능 구현",
+            "description": "갤러리에 사진을 업로드하는 기능을 추가합니다.",
             "dependencies": [],
-            "details": "Develop a form to select and upload photos. Integrate with existing gallery.js to handle uploads.",
+            "details": "사진을 선택하고 업로드할 수 있는 UI를 만듭니다. 기존 gallery.js와 연동하여 업로드를 처리합니다.",
             "status": "done",
-            "testStrategy": "Test photo upload with various file types and sizes.",
+            "testStrategy": "다양한 파일 형식과 크기로 사진 업로드를 테스트합니다.",
             "updatedAt": "2026-03-24T12:01:45.392Z",
             "parentId": "undefined"
           },
           {
             "id": 2,
-            "title": "Enhance Empty State UX",
-            "description": "Improve user experience when no photos or diaries are present.",
+            "title": "빈 상태 UX 개선",
+            "description": "사진이나 일기가 없을 때의 사용자 경험을 개선합니다.",
             "dependencies": [
               1
             ],
-            "details": "Design and implement a user-friendly message or graphic for empty states in the gallery and journal.",
+            "details": "갤러리와 기록장에서 데이터가 없을 때 표시되는 안내 문구 및 버튼을 친절하게 디자인하고 구현합니다.",
             "status": "done",
-            "testStrategy": "Verify empty state displays correctly when no data is present.",
+            "testStrategy": "데이터가 없는 상태에서 빈 화면 안내가 올바르게 표시되는지 확인합니다.",
             "parentId": "undefined",
             "updatedAt": "2026-03-24T12:02:30.508Z"
           },
           {
             "id": 3,
-            "title": "Implement Search and Filter for Photos and Diaries",
-            "description": "Add search and filter capabilities to the gallery and journal.",
+            "title": "사진/일기 검색 및 필터 기능 구현",
+            "description": "갤러리와 기록장에 검색 및 필터 기능을 추가합니다.",
             "dependencies": [
               1
             ],
-            "details": "Use JavaScript to enable search by keywords and filter by date or tags in gallery.js and storage.js.",
+            "details": "JavaScript를 사용해 gallery.js와 storage.js에서 키워드 검색 및 날짜/태그 필터를 구현합니다.",
             "status": "done",
-            "testStrategy": "Test search and filter with various criteria and ensure accurate results.",
+            "testStrategy": "다양한 조건으로 검색 및 필터를 테스트하고 결과가 정확한지 확인합니다.",
             "parentId": "undefined",
             "updatedAt": "2026-03-24T12:03:23.177Z"
           },
           {
             "id": 4,
-            "title": "Integrate Dashboard Preview with Gallery and Journal",
-            "description": "Ensure the dashboard preview displays recent photos and diary entries.",
+            "title": "대시보드 미리보기와 갤러리/기록장 연동",
+            "description": "대시보드 미리보기에 최근 사진과 일기가 표시되도록 연동합니다.",
             "dependencies": [
               2,
               3
             ],
-            "details": "Modify dashboard implementation to pull recent entries from localStorage and display them.",
+            "details": "대시보드 코드를 수정하여 localStorage에서 최근 항목을 불러와 화면에 표시합니다.",
             "status": "done",
-            "testStrategy": "Check that the dashboard updates with the latest entries from the gallery and journal.",
+            "testStrategy": "갤러리와 기록장에 데이터를 추가한 뒤 대시보드 미리보기가 최신 내용으로 업데이트되는지 확인합니다.",
             "parentId": "undefined",
             "updatedAt": "2026-03-24T12:03:23.214Z"
           },
           {
             "id": 5,
-            "title": "Verify Data Synchronization with Dashboard",
-            "description": "Ensure data consistency between the gallery, journal, and dashboard preview.",
+            "title": "대시보드와 데이터 동기화 확인",
+            "description": "갤러리, 기록장, 대시보드 미리보기 간의 데이터 일관성을 확인합니다.",
             "dependencies": [
               4
             ],
-            "details": "Test synchronization of data updates between the gallery, journal, and dashboard to ensure consistency.",
+            "details": "갤러리, 기록장, 대시보드 간 데이터 업데이트가 일관되게 반영되는지 동기화를 테스트합니다.",
             "status": "done",
-            "testStrategy": "Perform updates in the gallery and journal and verify changes reflect on the dashboard.",
+            "testStrategy": "갤러리와 기록장에서 데이터를 수정한 뒤 대시보드에 변경 사항이 반영되는지 확인합니다.",
             "parentId": "undefined",
             "updatedAt": "2026-03-24T12:03:23.245Z"
           }
@@ -108,10 +108,10 @@
       },
       {
         "id": "4",
-        "title": "Settings Page Development",
-        "description": "Create a settings page for personalizing user preferences.",
-        "details": "Develop a settings page to save pet name, notification preferences, API keys, and other settings using localStorage.",
-        "testStrategy": "Test saving and retrieving settings after page refresh. Validate input fields for correct data types.",
+        "title": "설정 페이지 개발",
+        "description": "사용자 개인 설정을 관리하는 설정 페이지를 만듭니다.",
+        "details": "localStorage를 사용해 반려동물 이름, 알림 설정, API 키 등 각종 설정값을 저장하는 설정 페이지를 개발합니다.",
+        "testStrategy": "설정값 저장 후 페이지를 새로고침해도 값이 유지되는지 테스트합니다. 각 입력 필드에 올바른 데이터 형식이 들어오는지 검증합니다.",
         "priority": "medium",
         "dependencies": [
           "1"
@@ -121,10 +121,10 @@
       },
       {
         "id": "5",
-        "title": "AI Chatbot Integration",
-        "description": "Integrate an AI chatbot for pet-related inquiries.",
-        "details": "Use OpenAI API or Cloudflare Worker to implement a chatbot interface. Ensure responses are in Korean and relevant to pet care.",
-        "testStrategy": "Test chatbot with various pet-related questions. Ensure responses are accurate and in Korean.",
+        "title": "AI 챗봇 연동",
+        "description": "반려동물 관련 질문에 답해주는 AI 챗봇을 연동합니다.",
+        "details": "OpenAI API 또는 Cloudflare Worker를 사용해 챗봇 인터페이스를 구현합니다. 응답은 반드시 한국어로 출력되어야 하며 반려동물 관련 내용에 특화되어야 합니다.",
+        "testStrategy": "다양한 반려동물 관련 질문으로 챗봇을 테스트합니다. 응답이 정확하고 한국어로 출력되는지 확인합니다.",
         "priority": "medium",
         "dependencies": [
           "1"
@@ -134,10 +134,10 @@
       },
       {
         "id": "6",
-        "title": "Responsive Design Implementation",
-        "description": "Ensure the web service is responsive and user-friendly on mobile devices.",
-        "details": "Use CSS media queries to adjust layouts for different screen sizes. Ensure all elements are accessible and usable on mobile devices.",
-        "testStrategy": "Test the web service on various devices and screen sizes. Check for layout issues and usability.",
+        "title": "반응형 디자인 구현",
+        "description": "웹 서비스가 모바일에서도 잘 보이고 사용하기 편하도록 반응형으로 만듭니다.",
+        "details": "CSS 미디어 쿼리를 사용해 화면 크기에 따라 레이아웃을 조정합니다. 모든 요소가 모바일에서도 접근 가능하고 사용 가능하도록 처리합니다.",
+        "testStrategy": "다양한 기기와 화면 크기에서 웹 서비스를 테스트합니다. 레이아웃 깨짐 및 사용성 문제를 확인합니다.",
         "priority": "low",
         "dependencies": [
           "2",
@@ -149,10 +149,10 @@
       },
       {
         "id": "7",
-        "title": "Error Handling and Feedback",
-        "description": "Implement error handling and user feedback mechanisms.",
-        "details": "Add error messages and feedback for user actions. Ensure errors are descriptive and guide users to resolve issues.",
-        "testStrategy": "Induce errors and verify that appropriate messages are displayed. Ensure feedback is clear and helpful.",
+        "title": "오류 처리 및 사용자 피드백",
+        "description": "오류 처리 및 사용자 행동에 대한 피드백 메커니즘을 구현합니다.",
+        "details": "사용자 동작에 대한 오류 메시지와 피드백을 추가합니다. 오류 메시지는 원인을 알기 쉽게 설명하고 해결 방법을 안내해야 합니다.",
+        "testStrategy": "의도적으로 오류를 발생시켜 적절한 메시지가 표시되는지 확인합니다. 피드백이 명확하고 도움이 되는지 검토합니다.",
         "priority": "medium",
         "dependencies": [
           "1",
@@ -166,10 +166,10 @@
       },
       {
         "id": "8",
-        "title": "Data Persistence Enhancement",
-        "description": "Plan for future data persistence beyond localStorage.",
-        "details": "Research and design a backend solution for data storage. Consider using a database and server-side logic for future scalability.",
-        "testStrategy": "Draft a plan and validate it with potential backend technologies. Ensure it aligns with current frontend architecture.",
+        "title": "데이터 영구 저장 고도화",
+        "description": "localStorage를 넘어선 영구적인 데이터 저장 방법을 계획합니다.",
+        "details": "데이터 저장을 위한 백엔드 솔루션을 조사하고 설계합니다. 향후 확장성을 위해 데이터베이스와 서버 사이드 로직 도입을 검토합니다.",
+        "testStrategy": "계획서를 작성하고 유력한 백엔드 기술과의 적합성을 검토합니다. 현재 프론트엔드 구조와 호환되는지 확인합니다.",
         "priority": "low",
         "dependencies": [
           "1",
@@ -181,10 +181,10 @@
       },
       {
         "id": "9",
-        "title": "Hardware Integration Planning",
-        "description": "Prepare for future integration with Raspberry Pi and other hardware.",
-        "details": "Outline the steps needed to integrate hardware components like cameras and motors. Plan API endpoints and data flow.",
-        "testStrategy": "Create a prototype plan and validate feasibility with existing hardware components. Ensure compatibility with the current system.",
+        "title": "하드웨어 연동 계획",
+        "description": "라즈베리파이 및 기타 하드웨어와의 향후 연동을 준비합니다.",
+        "details": "카메라, 모터 등 하드웨어 부품을 연동하기 위한 단계를 정리합니다. API 엔드포인트와 데이터 흐름을 설계합니다.",
+        "testStrategy": "프로토타입 계획서를 작성하고 기존 하드웨어 부품으로 실현 가능성을 검토합니다. 현재 시스템과의 호환성을 확인합니다.",
         "priority": "low",
         "dependencies": [
           "2",
@@ -195,10 +195,10 @@
       },
       {
         "id": "10",
-        "title": "Notification System Setup",
-        "description": "Implement a basic notification system for user alerts.",
-        "details": "Develop a notification system using JavaScript to alert users of important events. Use email or browser notifications as a temporary solution.",
-        "testStrategy": "Test notifications for various events. Ensure they are timely and informative.",
+        "title": "알림 시스템 설정",
+        "description": "사용자에게 중요한 이벤트를 알려주는 기본 알림 시스템을 구현합니다.",
+        "details": "JavaScript를 사용해 중요한 이벤트 발생 시 사용자에게 알림을 보내는 시스템을 개발합니다. 임시 방안으로 이메일 또는 브라우저 알림을 활용합니다.",
+        "testStrategy": "다양한 이벤트에 대해 알림을 테스트합니다. 알림이 적시에 전달되고 내용이 명확한지 확인합니다.",
         "priority": "medium",
         "dependencies": [
           "4"

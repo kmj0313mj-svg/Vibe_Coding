@@ -178,12 +178,23 @@
 
         <!-- 사진첩 탭 -->
         <section class="gallery-tab-content active" id="tab-photos">
-            <p class="tab-hint">대시보드에서 캡처한 사진이 여기에 저장됩니다.</p>
+            <div class="tab-toolbar">
+                <p class="tab-hint">대시보드에서 캡처하거나, 직접 사진을 업로드할 수 있습니다.</p>
+                <div class="tab-toolbar-right">
+                    <input type="text" class="search-input" id="photoSearch" placeholder="메모로 검색...">
+                    <input type="file" id="photoUploadInput" accept="image/*" multiple hidden>
+                    <button type="button" class="btn btn-primary" id="photoUploadBtn">📤 사진 업로드</button>
+                </div>
+            </div>
             <div class="photo-grid" id="photoGrid"></div>
             <div class="empty-state" id="photoEmpty">
                 <span class="empty-icon">🖼️</span>
                 <p>저장된 사진이 없습니다.</p>
-                <p class="empty-sub">대시보드에서 화면을 캡처해보세요!</p>
+                <p class="empty-sub">사진을 업로드하거나 대시보드에서 캡처해보세요!</p>
+                <div class="empty-actions">
+                    <button type="button" class="btn btn-primary" id="emptyUploadBtn">📤 사진 업로드</button>
+                    <a href="dashboard.html" class="btn btn-secondary">📷 대시보드로 이동</a>
+                </div>
             </div>
         </section>
 
@@ -193,11 +204,15 @@
                 <textarea id="diaryInput" placeholder="오늘 반려동물과 무슨 일이 있었나요? 일기를 작성해보세요..." rows="4"></textarea>
                 <button type="button" class="btn btn-primary" id="diaryAddBtn">✏️ 일기 작성</button>
             </div>
+            <div class="tab-toolbar">
+                <input type="text" class="search-input" id="diarySearch" placeholder="일기 내용 검색...">
+            </div>
             <div class="diary-list" id="diaryList"></div>
             <div class="empty-state" id="diaryEmpty">
                 <span class="empty-icon">📝</span>
                 <p>작성된 일기가 없습니다.</p>
-                <p class="empty-sub">첫 번째 일기를 작성해보세요!</p>
+                <p class="empty-sub">오늘 반려동물과의 하루를 기록해보세요!</p>
+                <button type="button" class="btn btn-primary" id="emptyDiaryBtn">✏️ 첫 일기 쓰기</button>
             </div>
         </section>
     </main>

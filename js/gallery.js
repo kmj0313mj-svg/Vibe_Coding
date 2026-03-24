@@ -69,16 +69,91 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // 사진 업로드
+    const photoUploadBtn = document.getElementById('photoUploadBtn');
+    const photoUploadInput = document.getElementById('photoUploadInput');
+
+    if (photoUploadBtn && photoUploadInput) {
+        photoUploadBtn.addEventListener('click', () => {
+            photoUploadInput.click();
+        });
+
+        photoUploadInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            if (files.length === 0) return;
+
+            let processed = 0;
+            files.forEach(file => {
+                if (!file.type.startsWith('image/')) return;
+
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    storage.saveCapture(event.target.result, file.name);
+                    processed++;
+                    if (processed === files.length) {
+                        loadPhotos();
+                        alert(`${processed}장의 사진이 업로드되었습니다!`);
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+
+            photoUploadInput.value = '';
+        });
+    }
+
+    // 사진 검색
+    const photoSearch = document.getElementById('photoSearch');
+    if (photoSearch) {
+        photoSearch.addEventListener('input', () => {
+            loadPhotos(photoSearch.value.trim());
+        });
+    }
+
+    // 일기 검색
+    const diarySearch = document.getElementById('diarySearch');
+    if (diarySearch) {
+        diarySearch.addEventListener('input', () => {
+            loadDiaries(diarySearch.value.trim());
+        });
+    }
+
+    // 빈 상태 업로드 버튼
+    const emptyUploadBtn = document.getElementById('emptyUploadBtn');
+    if (emptyUploadBtn && photoUploadInput) {
+        emptyUploadBtn.addEventListener('click', () => {
+            photoUploadInput.click();
+        });
+    }
+
+    // 빈 상태 일기 쓰기 버튼 → 일기 탭으로 전환 후 입력란 포커스
+    const emptyDiaryBtn = document.getElementById('emptyDiaryBtn');
+    if (emptyDiaryBtn) {
+        emptyDiaryBtn.addEventListener('click', () => {
+            const diaryTab = document.querySelector('.tab-btn[data-tab="diary"]');
+            if (diaryTab) diaryTab.click();
+            setTimeout(() => {
+                const input = document.getElementById('diaryInput');
+                if (input) input.focus();
+            }, 100);
+        });
+    }
+
     // 초기 로드
     loadPhotos();
     loadDiaries();
 });
 
 // 사진 목록 로드
-function loadPhotos() {
+function loadPhotos(keyword) {
     const photoGrid = document.getElementById('photoGrid');
     const photoEmpty = document.getElementById('photoEmpty');
-    const captures = storage.getCaptures();
+    let captures = storage.getCaptures();
+
+    if (keyword) {
+        const kw = keyword.toLowerCase();
+        captures = captures.filter(c => (c.memo || '').toLowerCase().includes(kw));
+    }
     
     if (!photoGrid || !photoEmpty) return;
     
@@ -130,10 +205,15 @@ function loadPhotos() {
 }
 
 // 일기 목록 로드
-function loadDiaries() {
+function loadDiaries(keyword) {
     const diaryList = document.getElementById('diaryList');
     const diaryEmpty = document.getElementById('diaryEmpty');
-    const diaries = storage.getDiaries();
+    let diaries = storage.getDiaries();
+
+    if (keyword) {
+        const kw = keyword.toLowerCase();
+        diaries = diaries.filter(d => (d.content || '').toLowerCase().includes(kw));
+    }
     
     if (!diaryList || !diaryEmpty) return;
     

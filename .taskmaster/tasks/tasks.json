@@ -1,0 +1,220 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": "1",
+        "title": "User Authentication Setup",
+        "description": "Implement user registration and login functionality.",
+        "details": "Use HTML, CSS, and JavaScript to create a registration and login form. Store user credentials in localStorage for MVP. Ensure protected pages are inaccessible without login.",
+        "testStrategy": "Test registration and login with valid and invalid credentials. Ensure protected pages redirect to login if not authenticated.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-03-24T12:00:05.442Z"
+      },
+      {
+        "id": "2",
+        "title": "Dashboard Implementation",
+        "description": "Develop the dashboard to display pet status and provide core functionalities.",
+        "details": "Create a dashboard page using HTML and CSS. Implement pet status display, video streaming area, and buttons for capture, record, and voice output using JavaScript.",
+        "testStrategy": "Verify each button's functionality: capture, record, and voice output. Check real-time updates on the dashboard.",
+        "priority": "high",
+        "dependencies": [
+          "1"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-03-24T12:00:05.673Z"
+      },
+      {
+        "id": "3",
+        "title": "Journal and Gallery Feature",
+        "description": "Implement the journal and gallery for storing and viewing photos and diaries.",
+        "details": "Develop a page to upload, view, edit, and delete photos and diary entries. Use localStorage to save data temporarily.",
+        "testStrategy": "Test photo upload, edit, and delete functionalities. Ensure diary entries can be created, viewed, and removed.",
+        "priority": "medium",
+        "dependencies": [
+          "2"
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement Photo Upload Feature",
+            "description": "Add functionality to upload photos to the gallery.",
+            "dependencies": [],
+            "details": "Develop a form to select and upload photos. Integrate with existing gallery.js to handle uploads.",
+            "status": "done",
+            "testStrategy": "Test photo upload with various file types and sizes.",
+            "updatedAt": "2026-03-24T12:01:45.392Z",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Enhance Empty State UX",
+            "description": "Improve user experience when no photos or diaries are present.",
+            "dependencies": [
+              1
+            ],
+            "details": "Design and implement a user-friendly message or graphic for empty states in the gallery and journal.",
+            "status": "done",
+            "testStrategy": "Verify empty state displays correctly when no data is present.",
+            "parentId": "undefined",
+            "updatedAt": "2026-03-24T12:02:30.508Z"
+          },
+          {
+            "id": 3,
+            "title": "Implement Search and Filter for Photos and Diaries",
+            "description": "Add search and filter capabilities to the gallery and journal.",
+            "dependencies": [
+              1
+            ],
+            "details": "Use JavaScript to enable search by keywords and filter by date or tags in gallery.js and storage.js.",
+            "status": "done",
+            "testStrategy": "Test search and filter with various criteria and ensure accurate results.",
+            "parentId": "undefined",
+            "updatedAt": "2026-03-24T12:03:23.177Z"
+          },
+          {
+            "id": 4,
+            "title": "Integrate Dashboard Preview with Gallery and Journal",
+            "description": "Ensure the dashboard preview displays recent photos and diary entries.",
+            "dependencies": [
+              2,
+              3
+            ],
+            "details": "Modify dashboard implementation to pull recent entries from localStorage and display them.",
+            "status": "done",
+            "testStrategy": "Check that the dashboard updates with the latest entries from the gallery and journal.",
+            "parentId": "undefined",
+            "updatedAt": "2026-03-24T12:03:23.214Z"
+          },
+          {
+            "id": 5,
+            "title": "Verify Data Synchronization with Dashboard",
+            "description": "Ensure data consistency between the gallery, journal, and dashboard preview.",
+            "dependencies": [
+              4
+            ],
+            "details": "Test synchronization of data updates between the gallery, journal, and dashboard to ensure consistency.",
+            "status": "done",
+            "testStrategy": "Perform updates in the gallery and journal and verify changes reflect on the dashboard.",
+            "parentId": "undefined",
+            "updatedAt": "2026-03-24T12:03:23.245Z"
+          }
+        ],
+        "updatedAt": "2026-03-24T12:03:23.245Z"
+      },
+      {
+        "id": "4",
+        "title": "Settings Page Development",
+        "description": "Create a settings page for personalizing user preferences.",
+        "details": "Develop a settings page to save pet name, notification preferences, API keys, and other settings using localStorage.",
+        "testStrategy": "Test saving and retrieving settings after page refresh. Validate input fields for correct data types.",
+        "priority": "medium",
+        "dependencies": [
+          "1"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "5",
+        "title": "AI Chatbot Integration",
+        "description": "Integrate an AI chatbot for pet-related inquiries.",
+        "details": "Use OpenAI API or Cloudflare Worker to implement a chatbot interface. Ensure responses are in Korean and relevant to pet care.",
+        "testStrategy": "Test chatbot with various pet-related questions. Ensure responses are accurate and in Korean.",
+        "priority": "medium",
+        "dependencies": [
+          "1"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "6",
+        "title": "Responsive Design Implementation",
+        "description": "Ensure the web service is responsive and user-friendly on mobile devices.",
+        "details": "Use CSS media queries to adjust layouts for different screen sizes. Ensure all elements are accessible and usable on mobile devices.",
+        "testStrategy": "Test the web service on various devices and screen sizes. Check for layout issues and usability.",
+        "priority": "low",
+        "dependencies": [
+          "2",
+          "3",
+          "4"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "7",
+        "title": "Error Handling and Feedback",
+        "description": "Implement error handling and user feedback mechanisms.",
+        "details": "Add error messages and feedback for user actions. Ensure errors are descriptive and guide users to resolve issues.",
+        "testStrategy": "Induce errors and verify that appropriate messages are displayed. Ensure feedback is clear and helpful.",
+        "priority": "medium",
+        "dependencies": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "8",
+        "title": "Data Persistence Enhancement",
+        "description": "Plan for future data persistence beyond localStorage.",
+        "details": "Research and design a backend solution for data storage. Consider using a database and server-side logic for future scalability.",
+        "testStrategy": "Draft a plan and validate it with potential backend technologies. Ensure it aligns with current frontend architecture.",
+        "priority": "low",
+        "dependencies": [
+          "1",
+          "3",
+          "4"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "9",
+        "title": "Hardware Integration Planning",
+        "description": "Prepare for future integration with Raspberry Pi and other hardware.",
+        "details": "Outline the steps needed to integrate hardware components like cameras and motors. Plan API endpoints and data flow.",
+        "testStrategy": "Create a prototype plan and validate feasibility with existing hardware components. Ensure compatibility with the current system.",
+        "priority": "low",
+        "dependencies": [
+          "2",
+          "8"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "10",
+        "title": "Notification System Setup",
+        "description": "Implement a basic notification system for user alerts.",
+        "details": "Develop a notification system using JavaScript to alert users of important events. Use email or browser notifications as a temporary solution.",
+        "testStrategy": "Test notifications for various events. Ensure they are timely and informative.",
+        "priority": "medium",
+        "dependencies": [
+          "4"
+        ],
+        "status": "pending",
+        "subtasks": []
+      }
+    ],
+    "metadata": {
+      "version": "1.0.0",
+      "lastModified": "2026-03-24T12:03:23.246Z",
+      "taskCount": 10,
+      "completedCount": 3,
+      "tags": [
+        "master"
+      ]
+    }
+  }
+}

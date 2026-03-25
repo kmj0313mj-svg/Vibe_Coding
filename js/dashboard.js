@@ -60,33 +60,56 @@ document.addEventListener('DOMContentLoaded', () => {
     loadRecentDiaries();
 });
 
+// 반려동물 이름 불러오기
+function getPetName() {
+    return localStorage.getItem('petName') || '반려동물';
+}
+
+// 반려동물 이름 오버레이 업데이트
+function updatePetNameOverlay() {
+    const overlay = document.getElementById('petNameOverlay');
+    if (!overlay) return;
+    const name = getPetName();
+    overlay.textContent = name ? `🐾 ${name}` : '';
+    overlay.style.display = name ? 'block' : 'none';
+}
+
 // 반려동물 상태 시뮬레이션
 function simulatePetStatus() {
     const statusBadge = document.getElementById('statusBadge');
     const statusIcon = document.getElementById('statusIcon');
     const statusText = document.getElementById('statusText');
     const statusTime = document.getElementById('statusTime');
-    
+
     if (!statusBadge) return;
-    
+
+    // 이름 초기 반영
+    updatePetNameOverlay();
+
+    // localStorage 변경 감지 (다른 탭/페이지에서 이름 바꿔도 반영)
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'petName') updatePetNameOverlay();
+    });
+
     // 랜덤으로 상태 변경 (데모용)
     setInterval(() => {
+        const name = getPetName();
         const isPetDetected = Math.random() > 0.3; // 70% 확률로 감지
-        
+
         if (isPetDetected) {
             statusBadge.className = 'status-badge pet-detected';
             statusIcon.textContent = '🟢';
-            statusText.textContent = '반려동물 있음';
+            statusText.textContent = `${name} 있음`;
         } else {
             statusBadge.className = 'status-badge pet-absent';
             statusIcon.textContent = '🔴';
-            statusText.textContent = '반려동물 없음';
+            statusText.textContent = `${name} 없음`;
         }
-        
+
         const now = new Date();
         const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
         statusTime.textContent = `⏱ 마지막 감지 시간: ${timeStr}`;
-    }, 5000); // 5초마다 업데이트
+    }, 5000);
 }
 
 // 텍스트 음성 재생

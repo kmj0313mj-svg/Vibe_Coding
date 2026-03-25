@@ -1111,8 +1111,15 @@ body {
     align-items: center;
 }
 
-.input-with-btn input {
+.input-with-btn input,
+.form-group .input-with-btn input {
     flex: 1;
+    width: auto;
+}
+
+.input-with-btn .btn {
+    flex-shrink: 0;
+    white-space: nowrap;
 }
 
 .danger-actions {

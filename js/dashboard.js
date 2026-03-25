@@ -65,16 +65,6 @@ function getPetName() {
     return localStorage.getItem('petName') || '반려동물';
 }
 
-// 반려동물 이름 오버레이 업데이트
-function updatePetNameOverlay() {
-    const overlay = document.getElementById('petNameOverlay');
-    if (!overlay) return;
-    const rawName = localStorage.getItem('petName') || '';
-    const displayName = rawName.trim() || '반려동물';
-    overlay.textContent = `🐾 ${displayName}`;
-    overlay.style.display = 'block';
-}
-
 function renderPetStatus(isPetDetected) {
     const statusBadge = document.getElementById('statusBadge');
     const statusIcon = document.getElementById('statusIcon');
@@ -83,8 +73,6 @@ function renderPetStatus(isPetDetected) {
     const name = getPetName();
 
     if (!statusBadge || !statusIcon || !statusText || !statusTime) return;
-
-    updatePetNameOverlay();
 
     if (isPetDetected) {
         statusBadge.className = 'status-badge pet-detected';

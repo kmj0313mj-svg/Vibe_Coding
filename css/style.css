@@ -950,20 +950,6 @@ body {
 }
 
 /* 상태 오버레이 */
-.pet-name-overlay {
-    position: absolute;
-    bottom: 16px;
-    left: 16px;
-    background: rgba(0, 0, 0, 0.55);
-    color: #fff;
-    font-size: 0.95rem;
-    font-weight: 600;
-    padding: 6px 14px;
-    border-radius: 20px;
-    backdrop-filter: blur(4px);
-    pointer-events: none;
-}
-
 .status-overlay {
     position: absolute;
     top: 16px;

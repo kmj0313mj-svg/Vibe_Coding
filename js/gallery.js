@@ -62,9 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 storage.saveDiary(content);
                 diaryInput.value = '';
                 loadDiaries();
-                alert('일기가 저장되었습니다!');
+                Toast.success('일기가 저장되었습니다!');
             } else {
-                alert('일기 내용을 입력해주세요.');
+                Toast.warning('일기 내용을 입력해주세요.');
             }
         });
     }
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     processed++;
                     if (processed === files.length) {
                         loadPhotos();
-                        alert(`${processed}장의 사진이 업로드되었습니다!`);
+                        Toast.success(`${processed}장의 사진이 업로드되었습니다!`);
                     }
                 };
                 reader.readAsDataURL(file);
@@ -251,6 +251,7 @@ function loadDiaries(keyword) {
             if (confirm('이 일기를 삭제하시겠습니까?')) {
                 storage.deleteDiary(diary.id);
                 loadDiaries();
+                Toast.success('일기가 삭제되었습니다.');
             }
         });
         
@@ -293,6 +294,7 @@ function openPhotoModal(capture) {
             storage.deleteCapture(capture.id);
             closePhotoModal();
             loadPhotos();
+            Toast.success('사진이 삭제되었습니다.');
         }
     };
     

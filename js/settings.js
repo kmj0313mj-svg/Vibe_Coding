@@ -250,39 +250,20 @@ function isValidEmail(email) {
 
 // 오류 메시지 표시
 function showErrorMessage(message) {
-    showToast(message, '#e74c3c');
+    if (typeof Toast !== 'undefined') {
+        Toast.error(message);
+    } else {
+        alert(message);
+    }
 }
 
 // 성공 메시지 표시
 function showSuccessMessage(message) {
-    showToast(message, 'var(--success-color, #27ae60)');
-}
-
-function showToast(message, bgColor) {
-    const existing = document.querySelector('.temp-success-message');
-    if (existing) existing.remove();
-
-    const div = document.createElement('div');
-    div.className = 'temp-success-message';
-    div.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: ${bgColor};
-        color: white;
-        padding: 12px 24px;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        z-index: 10000;
-        animation: slideIn 0.3s ease-out;
-    `;
-    div.textContent = message;
-    document.body.appendChild(div);
-
-    setTimeout(() => {
-        div.style.animation = 'slideOut 0.3s ease-out';
-        setTimeout(() => div.remove(), 300);
-    }, 2000);
+    if (typeof Toast !== 'undefined') {
+        Toast.success(message);
+    } else {
+        console.log(message);
+    }
 }
 
 // 애니메이션 스타일 추가

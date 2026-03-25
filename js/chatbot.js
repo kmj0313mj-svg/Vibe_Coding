@@ -207,7 +207,23 @@ async function handleSendMessage() {
         addMessage(response, false);
     } catch (error) {
         removeLoadingMessage();
-        addMessage(`죄송합니다. 오류가 발생했습니다: ${error.message}`, false);
+        let errorMsg = '죄송합니다. 오류가 발생했습니다.';
+        
+        if (error.message.includes('API 키')) {
+            errorMsg = '⚠️ API 키가 설정되지 않았습니다. 설정 페이지에서 API 키를 입력해주세요.';
+        } else if (error.message.includes('네트워크') || error.message.includes('fetch')) {
+            errorMsg = '🌐 네트워크 연결을 확인해주세요.';
+        } else if (error.message.includes('401') || error.message.includes('Unauthorized')) {
+            errorMsg = '🔑 API 키가 유효하지 않습니다. 설정 페이지에서 확인해주세요.';
+        } else if (error.message.includes('429')) {
+            errorMsg = '⏳ 요청이 너무 많습니다. 잠시 후 다시 시도해주세요.';
+        } else if (error.message.includes('500') || error.message.includes('서버')) {
+            errorMsg = '🔧 서버에 일시적인 문제가 발생했습니다. 잠시 후 다시 시도해주세요.';
+        } else {
+            errorMsg = `❌ ${error.message}`;
+        }
+        
+        addMessage(errorMsg, false);
     } finally {
         isProcessing = false;
         chatbotInput.disabled = false;

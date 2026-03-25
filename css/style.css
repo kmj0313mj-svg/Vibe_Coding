@@ -1232,6 +1232,30 @@ body {
     line-height: 1.5;
 }
 
+/* 알림 상태 표시 */
+.notification-status {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    flex: 1;
+}
+
+.status-granted {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+}
+
+.status-denied {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+}
+
+.status-default {
+    background: rgba(245, 158, 11, 0.15);
+    color: #f59e0b;
+}
+
 /* 토글 스위치 */
 .switch-group {
     margin-bottom: 20px;

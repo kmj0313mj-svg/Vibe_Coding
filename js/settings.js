@@ -186,6 +186,61 @@ function setupEventListeners() {
             showSuccessMessage('일기가 모두 삭제되었습니다.');
         }
     });
+
+    // 브라우저 알림 설정
+    setupNotificationSettings();
+}
+
+// 브라우저 알림 설정 초기화
+function setupNotificationSettings() {
+    const statusEl = document.getElementById('notificationStatus');
+    const enableBtn = document.getElementById('enableNotificationBtn');
+
+    if (!statusEl || !enableBtn) return;
+
+    function updateStatus() {
+        if (!('Notification' in window)) {
+            statusEl.textContent = '지원 안 함';
+            statusEl.className = 'notification-status status-denied';
+            enableBtn.style.display = 'none';
+            return;
+        }
+
+        const permission = Notification.permission;
+        
+        if (permission === 'granted') {
+            statusEl.textContent = '✅ 활성화됨';
+            statusEl.className = 'notification-status status-granted';
+            enableBtn.textContent = '테스트 알림';
+        } else if (permission === 'denied') {
+            statusEl.textContent = '❌ 차단됨';
+            statusEl.className = 'notification-status status-denied';
+            enableBtn.textContent = '설정에서 변경';
+        } else {
+            statusEl.textContent = '⏸️ 대기 중';
+            statusEl.className = 'notification-status status-default';
+            enableBtn.textContent = '알림 허용';
+        }
+    }
+
+    updateStatus();
+
+    enableBtn.addEventListener('click', async () => {
+        const permission = Notification.permission;
+        
+        if (permission === 'granted') {
+            if (typeof Notification_ !== 'undefined') {
+                Notification_.custom('테스트 알림', '알림이 정상적으로 작동합니다! 🎉');
+            }
+        } else if (permission === 'denied') {
+            Toast.info('브라우저 설정에서 알림 권한을 변경해주세요.');
+        } else {
+            if (typeof Notification_ !== 'undefined') {
+                await Notification_.requestPermission();
+                updateStatus();
+            }
+        }
+    });
 }
 
 // 비밀번호 변경 처리

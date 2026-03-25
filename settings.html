@@ -176,7 +176,15 @@
 
         <!-- 알림 및 메일 설정 -->
         <section class="settings-card">
-            <h2>📧 알림 및 메일 설정</h2>
+            <h2>🔔 알림 설정</h2>
+            <div class="form-group">
+                <label>브라우저 알림</label>
+                <div class="input-with-btn">
+                    <span id="notificationStatus" class="notification-status">확인 중...</span>
+                    <button type="button" class="btn btn-primary" id="enableNotificationBtn">알림 허용</button>
+                </div>
+                <p class="form-hint" style="margin-top: 8px;">반려동물 감지 상태 변화 시 브라우저 알림을 받습니다.</p>
+            </div>
             <div class="form-group switch-group">
                 <label class="switch-label">
                     <span class="switch-text">반려동물 부재 시 메일 받기</span>
@@ -348,6 +356,7 @@
     <script src="js/auth.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/toast.js"></script>
+    <script src="js/notification.js"></script>
     <script src="js/settings.js"></script>
     <script src="js/chatbot.js"></script>
     <script>

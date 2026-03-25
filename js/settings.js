@@ -89,11 +89,27 @@ function loadSettings() {
 
 // 이벤트 리스너 설정
 function setupEventListeners() {
-    // 반려동물 이름 저장 버튼
-    document.getElementById('petNameSaveBtn').addEventListener('click', () => {
-        const name = document.getElementById('petName').value.trim();
+    // 반려동물 이름 저장: 버튼 클릭, 엔터 제출, 입력값 변경 모두 지원
+    const petNameInput = document.getElementById('petName');
+    const petNameForm = document.getElementById('petNameForm');
+
+    function savePetName() {
+        const name = petNameInput.value.trim();
         localStorage.setItem('petName', name);
         showSuccessMessage(name ? `'${name}' 이름이 저장되었습니다.` : '반려동물 이름이 초기화되었습니다.');
+    }
+
+    petNameForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        savePetName();
+    });
+
+    petNameInput.addEventListener('change', savePetName);
+    petNameInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            savePetName();
+        }
     });
 
     // 메일 알림 설정

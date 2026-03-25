@@ -1109,6 +1109,7 @@ body {
     display: flex;
     gap: 8px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .input-with-btn input,
@@ -1120,6 +1121,7 @@ body {
 .input-with-btn .btn {
     flex-shrink: 0;
     white-space: nowrap;
+    min-height: 44px;
 }
 
 .danger-actions {

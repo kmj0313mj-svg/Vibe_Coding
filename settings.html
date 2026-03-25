@@ -162,13 +162,15 @@
         <!-- 반려동물 이름 -->
         <section class="settings-card">
             <h2>🐾 반려동물 이름</h2>
-            <div class="form-group">
-                <label for="petName">이름 설정</label>
-                <div class="input-with-btn">
-                    <input type="text" id="petName" placeholder="예: 초코 (비워두면 '반려동물'로 표시)">
-                    <button type="button" class="btn btn-primary" id="petNameSaveBtn">저장</button>
+            <form id="petNameForm">
+                <div class="form-group">
+                    <label for="petName">이름 설정</label>
+                    <div class="input-with-btn">
+                        <input type="text" id="petName" placeholder="예: 초코 (비워두면 '반려동물'로 표시)">
+                        <button type="submit" class="btn btn-primary" id="petNameSaveBtn">저장</button>
+                    </div>
                 </div>
-            </div>
+            </form>
             <p class="form-hint">대시보드에 "초코가 집에 있어요!"처럼 표시됩니다.</p>
         </section>
 

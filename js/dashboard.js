@@ -69,46 +69,68 @@ function getPetName() {
 function updatePetNameOverlay() {
     const overlay = document.getElementById('petNameOverlay');
     if (!overlay) return;
+    const rawName = localStorage.getItem('petName') || '';
+    const displayName = rawName.trim() || '반려동물';
+    overlay.textContent = `🐾 ${displayName}`;
+    overlay.style.display = 'block';
+}
+
+function renderPetStatus(isPetDetected) {
+    const statusBadge = document.getElementById('statusBadge');
+    const statusIcon = document.getElementById('statusIcon');
+    const statusText = document.getElementById('statusText');
+    const statusTime = document.getElementById('statusTime');
     const name = getPetName();
-    overlay.textContent = name ? `🐾 ${name}` : '';
-    overlay.style.display = name ? 'block' : 'none';
+
+    if (!statusBadge || !statusIcon || !statusText || !statusTime) return;
+
+    updatePetNameOverlay();
+
+    if (isPetDetected) {
+        statusBadge.className = 'status-badge pet-detected';
+        statusIcon.textContent = '🟢';
+        statusText.textContent = `${name} 있음`;
+    } else {
+        statusBadge.className = 'status-badge pet-absent';
+        statusIcon.textContent = '🔴';
+        statusText.textContent = `${name} 없음`;
+    }
+
+    const now = new Date();
+    const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+    statusTime.textContent = `⏱ 마지막 감지 시간: ${timeStr}`;
 }
 
 // 반려동물 상태 시뮬레이션
 function simulatePetStatus() {
     const statusBadge = document.getElementById('statusBadge');
-    const statusIcon = document.getElementById('statusIcon');
-    const statusText = document.getElementById('statusText');
-    const statusTime = document.getElementById('statusTime');
-
     if (!statusBadge) return;
 
     // 이름 초기 반영
     updatePetNameOverlay();
+    renderPetStatus(true);
 
     // localStorage 변경 감지 (다른 탭/페이지에서 이름 바꿔도 반영)
     window.addEventListener('storage', (e) => {
-        if (e.key === 'petName') updatePetNameOverlay();
+        if (e.key === 'petName') {
+            renderPetStatus(statusBadge.classList.contains('pet-detected'));
+        }
+    });
+
+    window.addEventListener('pageshow', () => {
+        renderPetStatus(statusBadge.classList.contains('pet-detected'));
+    });
+
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+            renderPetStatus(statusBadge.classList.contains('pet-detected'));
+        }
     });
 
     // 랜덤으로 상태 변경 (데모용)
     setInterval(() => {
-        const name = getPetName();
         const isPetDetected = Math.random() > 0.3; // 70% 확률로 감지
-
-        if (isPetDetected) {
-            statusBadge.className = 'status-badge pet-detected';
-            statusIcon.textContent = '🟢';
-            statusText.textContent = `${name} 있음`;
-        } else {
-            statusBadge.className = 'status-badge pet-absent';
-            statusIcon.textContent = '🔴';
-            statusText.textContent = `${name} 없음`;
-        }
-
-        const now = new Date();
-        const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-        statusTime.textContent = `⏱ 마지막 감지 시간: ${timeStr}`;
+        renderPetStatus(isPetDetected);
     }, 5000);
 }
 

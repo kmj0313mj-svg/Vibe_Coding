@@ -37,10 +37,9 @@ function checkApiMode() {
 
 // 설정 불러오기
 function loadSettings() {
-    // 로그인 체크 - auth.js와 동일한 키 사용
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     const currentUser = localStorage.getItem('currentUser') || localStorage.getItem('username');
-    
+
     if (!isLoggedIn || !currentUser) {
         window.location.href = 'index.html';
         return;
@@ -49,25 +48,33 @@ function loadSettings() {
     // 사용자 정보 표시
     document.getElementById('displayUsername').value = currentUser;
 
+    // 가입일 표시 (버그 수정: users에서 joinDate 불러오기)
+    const users = JSON.parse(localStorage.getItem('users') || '{}');
+    if (users[currentUser] && users[currentUser].joinDate) {
+        const joinDate = new Date(users[currentUser].joinDate);
+        document.getElementById('displayJoinDate').value =
+            `${joinDate.getFullYear()}.${String(joinDate.getMonth() + 1).padStart(2, '0')}.${String(joinDate.getDate()).padStart(2, '0')}`;
+    } else {
+        document.getElementById('displayJoinDate').value = '데모 계정';
+    }
+
     // 반려동물 이름
     const petName = localStorage.getItem('petName') || '';
     document.getElementById('petName').value = petName;
 
     // 메일 알림 설정
-    const mailNotification = localStorage.getItem('mailNotification') === 'true';
-    document.getElementById('mailNotificationSwitch').checked = mailNotification;
-
-    const mailRecipient = localStorage.getItem('mailRecipient') || '';
-    document.getElementById('mailRecipient').value = mailRecipient;
-
-    const mailDelay = localStorage.getItem('mailDelay') || '30';
-    document.getElementById('mailDelay').value = mailDelay;
+    document.getElementById('mailNotificationSwitch').checked =
+        localStorage.getItem('mailNotification') === 'true';
+    document.getElementById('mailRecipient').value =
+        localStorage.getItem('mailRecipient') || '';
+    document.getElementById('mailDelay').value =
+        localStorage.getItem('mailDelay') || '30';
 
     // 모터 속도 설정
-    const motorSpeed = localStorage.getItem('motorSpeed') || 'medium';
-    document.getElementById('motorSpeed').value = motorSpeed;
+    document.getElementById('motorSpeed').value =
+        localStorage.getItem('motorSpeed') || 'medium';
 
-    // OpenAI API 키 (마스킹해서 표시)
+    // OpenAI API 키
     const apiKey = localStorage.getItem('openai_api_key') || '';
     if (apiKey) {
         document.getElementById('openaiApiKey').value = apiKey;
@@ -76,18 +83,17 @@ function loadSettings() {
     // 현재 테마 표시
     const currentTheme = localStorage.getItem('theme') || 'dark';
     document.querySelectorAll('.theme-option').forEach(btn => {
-        if (btn.dataset.theme === currentTheme) {
-            btn.classList.add('active');
-        }
+        btn.classList.toggle('active', btn.dataset.theme === currentTheme);
     });
 }
 
 // 이벤트 리스너 설정
 function setupEventListeners() {
-    // 반려동물 이름 저장
-    document.getElementById('petName').addEventListener('change', (e) => {
-        localStorage.setItem('petName', e.target.value);
-        showSuccessMessage('반려동물 이름이 저장되었습니다.');
+    // 반려동물 이름 저장 버튼
+    document.getElementById('petNameSaveBtn').addEventListener('click', () => {
+        const name = document.getElementById('petName').value.trim();
+        localStorage.setItem('petName', name);
+        showSuccessMessage(name ? `'${name}' 이름이 저장되었습니다.` : '반려동물 이름이 초기화되었습니다.');
     });
 
     // 메일 알림 설정
@@ -97,7 +103,12 @@ function setupEventListeners() {
     });
 
     document.getElementById('mailRecipient').addEventListener('change', (e) => {
-        localStorage.setItem('mailRecipient', e.target.value);
+        const email = e.target.value.trim();
+        if (email && !isValidEmail(email)) {
+            showErrorMessage('올바른 이메일 형식이 아닙니다.');
+            return;
+        }
+        localStorage.setItem('mailRecipient', email);
         showSuccessMessage('수신 메일 주소가 저장되었습니다.');
     });
 
@@ -126,24 +137,18 @@ function setupEventListeners() {
 
     // API 키 보기/숨기기
     document.getElementById('toggleApiKey').addEventListener('click', () => {
-        const apiKeyInput = document.getElementById('openaiApiKey');
-        if (apiKeyInput.type === 'password') {
-            apiKeyInput.type = 'text';
-        } else {
-            apiKeyInput.type = 'password';
-        }
+        const input = document.getElementById('openaiApiKey');
+        input.type = input.type === 'password' ? 'text' : 'password';
     });
 
     // 테마 변경
     document.querySelectorAll('.theme-option').forEach(btn => {
         btn.addEventListener('click', () => {
-            const theme = btn.dataset.theme;
-            document.body.className = theme === 'dark' ? 'dashboard' : 'dashboard light-theme';
-            localStorage.setItem('theme', theme);
-            
+            const selectedTheme = btn.dataset.theme;
+            document.body.className = selectedTheme === 'dark' ? 'dashboard' : 'dashboard light-theme';
+            localStorage.setItem('theme', selectedTheme);
             document.querySelectorAll('.theme-option').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            
             showSuccessMessage('테마가 변경되었습니다.');
         });
     });
@@ -151,10 +156,19 @@ function setupEventListeners() {
     // 비밀번호 변경 폼
     document.getElementById('passwordForm').addEventListener('submit', handlePasswordChange);
 
-    // 로그아웃
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-        localStorage.removeItem('currentUser');
-        window.location.href = 'index.html';
+    // 데이터 초기화 버튼
+    document.getElementById('clearPhotosBtn').addEventListener('click', () => {
+        if (confirm('저장된 사진을 모두 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.')) {
+            localStorage.removeItem('captures');
+            showSuccessMessage('사진이 모두 삭제되었습니다.');
+        }
+    });
+
+    document.getElementById('clearDiariesBtn').addEventListener('click', () => {
+        if (confirm('작성된 일기를 모두 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.')) {
+            localStorage.removeItem('diaries');
+            showSuccessMessage('일기가 모두 삭제되었습니다.');
+        }
     });
 }
 
@@ -213,20 +227,32 @@ function handlePasswordChange(e) {
     document.getElementById('passwordForm').reset();
 }
 
+// 이메일 유효성 검사
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// 오류 메시지 표시
+function showErrorMessage(message) {
+    showToast(message, '#e74c3c');
+}
+
 // 성공 메시지 표시
 function showSuccessMessage(message) {
-    const existingMessage = document.querySelector('.temp-success-message');
-    if (existingMessage) {
-        existingMessage.remove();
-    }
+    showToast(message, 'var(--success-color, #27ae60)');
+}
 
-    const messageDiv = document.createElement('div');
-    messageDiv.className = 'temp-success-message';
-    messageDiv.style.cssText = `
+function showToast(message, bgColor) {
+    const existing = document.querySelector('.temp-success-message');
+    if (existing) existing.remove();
+
+    const div = document.createElement('div');
+    div.className = 'temp-success-message';
+    div.style.cssText = `
         position: fixed;
         top: 20px;
         right: 20px;
-        background: var(--success-color, #27ae60);
+        background: ${bgColor};
         color: white;
         padding: 12px 24px;
         border-radius: 8px;
@@ -234,13 +260,12 @@ function showSuccessMessage(message) {
         z-index: 10000;
         animation: slideIn 0.3s ease-out;
     `;
-    messageDiv.textContent = message;
-
-    document.body.appendChild(messageDiv);
+    div.textContent = message;
+    document.body.appendChild(div);
 
     setTimeout(() => {
-        messageDiv.style.animation = 'slideOut 0.3s ease-out';
-        setTimeout(() => messageDiv.remove(), 300);
+        div.style.animation = 'slideOut 0.3s ease-out';
+        setTimeout(() => div.remove(), 300);
     }, 2000);
 }
 

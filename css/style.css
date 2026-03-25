@@ -1079,6 +1079,55 @@ body {
     border-color: var(--primary);
 }
 
+.settings-card-danger {
+    border-color: rgba(231, 76, 60, 0.3);
+}
+
+.settings-card-danger:hover {
+    border-color: rgba(231, 76, 60, 0.6);
+}
+
+.settings-card-danger h2 {
+    color: #e74c3c;
+}
+
+.input-with-btn {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.input-with-btn input {
+    flex: 1;
+}
+
+.danger-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.danger-action-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 16px;
+    background: rgba(231, 76, 60, 0.06);
+    border: 1px solid rgba(231, 76, 60, 0.15);
+    border-radius: 10px;
+}
+
+.danger-action-item strong {
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.danger-action-item .form-hint {
+    margin-bottom: 0;
+}
+
 .settings-card h2 {
     font-size: 1rem;
     font-weight: 600;

@@ -269,15 +269,14 @@
                         <div class="chat-float-title-sub">무엇이든 물어보세요!</div>
                     </div>
                 </div>
+                <button type="button" class="chat-float-reset" id="chatResetBtn" aria-label="대화 초기화" title="새 대화 시작">🔄</button>
                 <button type="button" class="chat-float-close" id="chatFloatClose" aria-label="챗봇 닫기">✕</button>
             </div>
             <div class="chat-float-messages" id="chatbotMessages">
-                <div class="chatbot-message bot-message">
-                    <div class="message-avatar">🤖</div>
-                    <div class="message-content">
-                        <p>안녕하세요! 🐾 반려동물 관련 질문이 있으시면 무엇이든 물어보세요.</p>
-                    </div>
-                </div>
+                <!-- 메시지는 JS에서 동적으로 추가됨 -->
+            </div>
+            <div class="chat-quick-questions" id="quickQuestions">
+                <!-- 빠른 질문 버튼은 JS에서 동적으로 추가됨 -->
             </div>
             <div class="chat-float-input">
                 <input type="text" id="chatbotInput" placeholder="반려동물에 대해 물어보세요..." maxlength="500" autocomplete="off">

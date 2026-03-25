@@ -34,12 +34,22 @@ function isApiKeyConfigured() {
 // ── 상태 ──────────────────────────────────────────────────────
 let isChatOpen = false;
 let isProcessing = false;
-let conversationHistory = [
-    {
+let conversationHistory = [];
+
+// 시스템 프롬프트 생성 (반려동물 이름 포함)
+function getSystemPrompt() {
+    const petName = localStorage.getItem('petName') || '';
+    const petContext = petName ? `사용자의 반려동물 이름은 "${petName}"입니다. 대화 중 자연스럽게 이름을 사용해주세요. ` : '';
+    return {
         role: "system",
-        content: "당신은 반려동물 전문 상담사입니다. 반려동물의 건강, 행동, 훈련, 영양 등에 대해 친절하고 전문적으로 답변해주세요. 답변은 한국어로 해주세요."
-    }
-];
+        content: `당신은 반려동물 전문 상담사입니다. ${petContext}반려동물의 건강, 행동, 훈련, 영양 등에 대해 친절하고 전문적으로 답변해주세요. 답변은 반드시 한국어로 해주세요. 답변은 간결하게 2-3문단 이내로 해주세요.`
+    };
+}
+
+// 대화 초기화
+function resetConversation() {
+    conversationHistory = [getSystemPrompt()];
+}
 
 // ── DOM 요소 ───────────────────────────────────────────────────
 const chatFloatBtn  = document.getElementById('chatFloatBtn');
@@ -216,24 +226,73 @@ if (chatbotInput) {
     });
 }
 
-// ── 초기화 ────────────────────────────────────────────────────
-window.addEventListener('DOMContentLoaded', () => {
-    if (!isApiKeyConfigured()) {
-        if (typeof API_CONFIG !== 'undefined') {
-            if (API_CONFIG.MODE === 'cloudflare') {
-                addMessage('⚠️ Cloudflare Worker가 설정되지 않았습니다. 관리자에게 문의해주세요.', false);
-            } else if (API_CONFIG.MODE === 'server') {
-                addMessage('⚠️ 서버 API 키가 설정되지 않았습니다. 관리자에게 문의해주세요.', false);
-            } else {
-                addMessage('⚠️ OpenAI API 키가 설정되지 않았습니다. 설정 페이지에서 API 키를 입력해주세요.', false);
+// ── 빠른 질문 버튼 ────────────────────────────────────────────
+const quickQuestions = [
+    '강아지 예방접종 일정',
+    '고양이 사료 추천',
+    '반려동물 건강 체크'
+];
+
+function renderQuickQuestions() {
+    const container = document.getElementById('quickQuestions');
+    if (!container) return;
+
+    container.innerHTML = '';
+    quickQuestions.forEach(q => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'quick-question-btn';
+        btn.textContent = q;
+        btn.addEventListener('click', () => {
+            if (chatbotInput) {
+                chatbotInput.value = q;
+                handleSendMessage();
             }
-        } else {
-            addMessage('⚠️ OpenAI API 키가 설정되지 않았습니다. 설정 페이지에서 API 키를 입력해주세요.', false);
+        });
+        container.appendChild(btn);
+    });
+}
+
+// ── 대화 초기화 버튼 ──────────────────────────────────────────
+function setupResetButton() {
+    const resetBtn = document.getElementById('chatResetBtn');
+    if (!resetBtn) return;
+
+    resetBtn.addEventListener('click', () => {
+        resetConversation();
+        if (chatbotMessages) {
+            chatbotMessages.innerHTML = '';
+            showWelcomeMessage();
+            renderQuickQuestions();
         }
-    } else {
-        if (typeof API_CONFIG !== 'undefined' &&
-            (API_CONFIG.MODE === 'server' || API_CONFIG.MODE === 'cloudflare')) {
-            addMessage('안녕하세요! 🐾 반려동물에 대해 궁금한 것이 있으시면 언제든 물어보세요!', false);
+    });
+}
+
+// ── 환영 메시지 ───────────────────────────────────────────────
+function showWelcomeMessage() {
+    const petName = localStorage.getItem('petName') || '';
+    const greeting = petName 
+        ? `안녕하세요! 🐾 ${petName}에 대해 궁금한 것이 있으시면 언제든 물어보세요!`
+        : '안녕하세요! 🐾 반려동물에 대해 궁금한 것이 있으시면 언제든 물어보세요!';
+    
+    addMessage(greeting, false);
+
+    if (!isApiKeyConfigured()) {
+        const mode = typeof API_CONFIG !== 'undefined' ? API_CONFIG.MODE : 'user';
+        if (mode === 'cloudflare') {
+            addMessage('⚠️ Cloudflare Worker가 설정되지 않았습니다. 관리자에게 문의해주세요.', false);
+        } else if (mode === 'server') {
+            addMessage('⚠️ 서버 API 키가 설정되지 않았습니다. 관리자에게 문의해주세요.', false);
+        } else {
+            addMessage('💡 AI 상담을 이용하려면 설정 페이지에서 OpenAI API 키를 입력해주세요.', false);
         }
     }
+}
+
+// ── 초기화 ────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+    resetConversation();
+    showWelcomeMessage();
+    renderQuickQuestions();
+    setupResetButton();
 });

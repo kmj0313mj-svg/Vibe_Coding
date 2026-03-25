@@ -2537,6 +2537,59 @@ body {
     background: rgba(255,255,255,0.35);
 }
 
+.chat-float-reset {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    border-radius: 7px;
+    width: 30px;
+    height: 30px;
+    color: white;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+    -webkit-tap-highlight-color: transparent;
+    flex-shrink: 0;
+    margin-right: auto;
+}
+
+.chat-float-reset:hover {
+    background: rgba(255,255,255,0.35);
+}
+
+/* 빠른 질문 버튼 */
+.chat-quick-questions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 12px;
+    background: var(--bg-light);
+    border-top: 1px solid var(--border);
+}
+
+.quick-question-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    white-space: nowrap;
+}
+
+.quick-question-btn:hover {
+    background: var(--primary-hover);
+    transform: scale(1.03);
+}
+
+.quick-question-btn:active {
+    transform: scale(0.97);
+}
+
 /* 메시지 영역 */
 .chat-float-messages {
     flex: 1;

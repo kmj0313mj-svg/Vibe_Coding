@@ -1389,6 +1389,7 @@ body {
     color: var(--text-primary, #e2e8f0);
     font-size: 0.875rem;
     width: 180px;
+    max-width: 100%;
     transition: border-color 0.2s;
 }
 
@@ -2130,6 +2131,32 @@ body {
         padding: 16px;
     }
 
+    .gallery-tabs {
+        flex-wrap: wrap;
+    }
+
+    .tab-btn {
+        flex: 1;
+        min-width: 80px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .tab-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .tab-toolbar-right {
+        width: 100%;
+    }
+
+    .search-input {
+        flex: 1;
+        width: auto;
+    }
+
     .photo-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 12px;
@@ -2137,6 +2164,14 @@ body {
 
     .recent-photos {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .diary-list {
+        gap: 12px;
+    }
+
+    .diary-card {
+        padding: 14px;
     }
 
     /* 설정 */
@@ -2149,8 +2184,36 @@ body {
         border-radius: 12px;
     }
 
+    .settings-card h2 {
+        font-size: 0.95rem;
+    }
+
+    .form-group label {
+        font-size: 0.8rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 10px 14px;
+        font-size: 0.9rem;
+    }
+
     .theme-toggle-group {
         flex-direction: column;
+    }
+
+    .input-with-btn {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .input-with-btn input {
+        width: 100% !important;
+    }
+
+    .input-with-btn .btn {
+        width: 100%;
     }
 
     /* 챗봇 */
@@ -2668,6 +2731,24 @@ body {
     transform: none;
 }
 
+/* 모바일 태블릿 */
+@media (max-width: 768px) {
+    .chat-float-popup {
+        width: calc(100vw - 32px);
+        max-height: calc(100svh - 120px);
+    }
+
+    .chat-quick-questions {
+        padding: 6px 10px;
+        gap: 5px;
+    }
+
+    .quick-question-btn {
+        padding: 5px 10px;
+        font-size: 0.7rem;
+    }
+}
+
 /* 모바일 */
 @media (max-width: 480px) {
     .chat-float {
@@ -2690,6 +2771,38 @@ body {
         width: calc(100vw - 20px);
         right: 0;
         max-height: calc(100svh - 100px);
+    }
+
+    .chat-float-header {
+        padding: 12px;
+    }
+
+    .chat-float-title-text {
+        font-size: 0.9rem;
+    }
+
+    .chat-float-title-sub {
+        font-size: 0.65rem;
+    }
+
+    .chat-float-messages {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .message-content {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+    }
+
+    .chat-float-input {
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .chat-float-input input {
+        padding: 10px 14px;
+        font-size: 0.85rem;
     }
 }
 

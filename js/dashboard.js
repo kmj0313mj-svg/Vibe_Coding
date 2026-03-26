@@ -1,5 +1,10 @@
 // 대시보드 기능
 document.addEventListener('DOMContentLoaded', () => {
+    auth.init().then(() => {
+    if (!auth.isLoggedIn()) {
+        window.location.href = 'index.html';
+        return;
+    }
     // 테마 토글 버튼
     const themeToggle = document.getElementById('themeToggle');
     if (themeToggle) {
@@ -58,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 최근 사진 및 일기 로드
     loadRecentPhotos();
     loadRecentDiaries();
+    });
 });
 
 // 반려동물 이름 불러오기
@@ -94,8 +100,7 @@ function simulatePetStatus() {
     const statusBadge = document.getElementById('statusBadge');
     if (!statusBadge) return;
 
-    // 이름 초기 반영
-    updatePetNameOverlay();
+    // 초기 상태와 현재 반려동물 이름을 함께 반영
     renderPetStatus(true);
 
     // localStorage 변경 감지 (다른 탭/페이지에서 이름 바꿔도 반영)
@@ -202,7 +207,7 @@ function loadRecentPhotos() {
     recentCaptures.forEach(capture => {
         const item = document.createElement('div');
         item.className = 'recent-photo-item';
-        item.onclick = () => window.location.href = 'gallery.html';
+        item.onclick = () => window.location.href = 'photos.html';
         
         const img = document.createElement('img');
         img.src = capture.imageData;
@@ -243,7 +248,7 @@ function loadRecentDiaries() {
     recentDiaryList.forEach(diary => {
         const item = document.createElement('div');
         item.className = 'recent-diary-item';
-        item.onclick = () => window.location.href = 'gallery.html';
+        item.onclick = () => window.location.href = 'diary.html';
         
         const content = document.createElement('div');
         content.className = 'recent-diary-content';

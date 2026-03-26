@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>반려동물 모니터링 - AI 상담 내역</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/theme.js"></script>
+</head>
+<body class="dashboard">
+
+    <!-- ===== GNB ===== -->
+    <header class="gnb" role="banner">
+        <div class="gnb-logo">
+            <a href="dashboard.html" class="gnb-logo-link">
+                <span class="gnb-logo-icon">🐾</span>
+                <span class="gnb-logo-text">반려동물 모니터링</span>
+            </a>
+        </div>
+
+        <nav class="gnb-nav" aria-label="주 네비게이션">
+            <ul class="gnb-menu" role="menubar">
+                <li class="gnb-item" role="none">
+                    <a href="dashboard.html" class="gnb-link" role="menuitem">Home</a>
+                </li>
+                <li class="gnb-item has-dropdown" role="none">
+                    <button type="button" class="gnb-link" role="menuitem" aria-haspopup="true" aria-expanded="false">
+                        Activity <span class="gnb-arrow">▾</span>
+                    </button>
+                    <ul class="gnb-dropdown" role="menu" aria-label="Activity 하위 메뉴">
+                        <li role="none">
+                            <a href="photos.html" class="gnb-dropdown-item" role="menuitem">
+                                <span class="gnb-dropdown-icon">📷</span> 사진첩
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a href="diary.html" class="gnb-dropdown-item" role="menuitem">
+                                <span class="gnb-dropdown-icon">📝</span> 기록장
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a href="chat-history.html" class="gnb-dropdown-item active" role="menuitem">
+                                <span class="gnb-dropdown-icon">🤖</span> AI 상담 내역
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="gnb-item" role="none">
+                    <a href="https://www.happypet.co.kr" target="_blank" rel="noopener noreferrer" class="gnb-link" role="menuitem">
+                        Pet News <span class="gnb-external">↗</span>
+                    </a>
+                </li>
+                <li class="gnb-item has-dropdown" role="none">
+                    <button type="button" class="gnb-link" role="menuitem" aria-haspopup="true" aria-expanded="false">
+                        Support <span class="gnb-arrow">▾</span>
+                    </button>
+                    <ul class="gnb-dropdown" role="menu" aria-label="Support 하위 메뉴">
+                        <li role="none">
+                            <a href="notice.html" class="gnb-dropdown-item" role="menuitem">
+                                <span class="gnb-dropdown-icon">📢</span> 공지사항
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a href="inquiry.html" class="gnb-dropdown-item" role="menuitem">
+                                <span class="gnb-dropdown-icon">💬</span> 1:1 문의
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="gnb-actions">
+            <button type="button" class="btn btn-theme" id="themeToggle" title="테마 전환">🌙</button>
+            <a href="settings.html" class="gnb-mypage-btn" title="마이페이지" aria-label="마이페이지">
+                👤
+                <span class="gnb-mypage-tooltip">마이페이지</span>
+            </a>
+            <div class="gnb-divider" aria-hidden="true"></div>
+            <button type="button" class="gnb-logout-btn" id="logoutBtn">로그아웃</button>
+            <button type="button" class="btn-hamburger" id="mobileMenuBtn" aria-label="메뉴 열기" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ===== 모바일 네비게이션 드로어 ===== -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+    <nav class="mobile-nav-drawer" id="mobileNavDrawer" aria-label="모바일 메뉴">
+        <div class="mobile-nav-top">
+            <span class="mobile-nav-brand">🐾 반려동물 모니터링</span>
+            <button type="button" class="mobile-nav-close" id="mobileNavClose" aria-label="메뉴 닫기">✕</button>
+        </div>
+        <div class="mobile-nav-links">
+            <a href="dashboard.html" class="mobile-nav-item">
+                <span class="mobile-nav-icon">🏠</span> Home
+            </a>
+            <div class="mobile-nav-accordion">
+                <button type="button" class="mobile-nav-item mobile-accordion-trigger" data-target="mobileActivityMenu">
+                    <span class="mobile-nav-icon">📸</span>
+                    <span style="flex:1; text-align:left;">Activity</span>
+                    <span class="mobile-accordion-arrow">▾</span>
+                </button>
+                <div class="mobile-accordion-panel" id="mobileActivityMenu">
+                    <a href="photos.html" class="mobile-nav-sub-item">
+                        <span class="mobile-nav-icon">📷</span> 사진첩
+                    </a>
+                    <a href="diary.html" class="mobile-nav-sub-item">
+                        <span class="mobile-nav-icon">📝</span> 기록장
+                    </a>
+                    <a href="chat-history.html" class="mobile-nav-sub-item active">
+                        <span class="mobile-nav-icon">🤖</span> AI 상담 내역
+                    </a>
+                </div>
+            </div>
+            <a href="https://www.happypet.co.kr" target="_blank" rel="noopener noreferrer" class="mobile-nav-item">
+                <span class="mobile-nav-icon">🐶</span>
+                <span style="flex:1;">Pet News</span>
+                <span style="font-size:0.75rem; opacity:0.5;">↗</span>
+            </a>
+            <div class="mobile-nav-accordion">
+                <button type="button" class="mobile-nav-item mobile-accordion-trigger" data-target="mobileSupportMenu">
+                    <span class="mobile-nav-icon">🛎️</span>
+                    <span style="flex:1; text-align:left;">Support</span>
+                    <span class="mobile-accordion-arrow">▾</span>
+                </button>
+                <div class="mobile-accordion-panel" id="mobileSupportMenu">
+                    <a href="notice.html" class="mobile-nav-sub-item">
+                        <span class="mobile-nav-icon">📢</span> 공지사항
+                    </a>
+                    <a href="inquiry.html" class="mobile-nav-sub-item">
+                        <span class="mobile-nav-icon">💬</span> 1:1 문의
+                    </a>
+                </div>
+            </div>
+            <a href="settings.html" class="mobile-nav-item">
+                <span class="mobile-nav-icon">👤</span> 마이페이지
+            </a>
+        </div>
+        <div class="mobile-nav-theme-row">
+            <span class="mobile-nav-theme-label">화면 테마</span>
+            <button type="button" class="btn btn-theme" id="themeToggleMobile" title="테마 전환">🌙</button>
+        </div>
+        <div class="mobile-nav-footer">
+            <button type="button" class="mobile-nav-item logout" id="logoutBtnMobile" style="width:100%;">
+                <span class="mobile-nav-icon">🚪</span> 로그아웃
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== 메인 컨텐츠 ===== -->
+    <main class="chat-history-page">
+        <div class="chat-history-header">
+            <h1>🤖 AI 상담 내역</h1>
+            <p>지금까지 나눈 AI 반려동물 상담 내용을 확인하세요.</p>
+        </div>
+
+        <!-- 필터 & 검색 영역 -->
+        <section class="chat-history-filters">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="dateFrom">시작일</label>
+                    <input type="date" id="dateFrom" class="filter-input">
+                </div>
+                <div class="filter-group">
+                    <label for="dateTo">종료일</label>
+                    <input type="date" id="dateTo" class="filter-input">
+                </div>
+                <div class="filter-group filter-group-search">
+                    <label for="searchKeyword">검색</label>
+                    <input type="text" id="searchKeyword" class="filter-input" placeholder="질문 또는 답변 내용 검색...">
+                </div>
+                <div class="filter-actions">
+                    <button type="button" class="btn btn-primary" id="applyFilterBtn">검색</button>
+                    <button type="button" class="btn btn-secondary" id="resetFilterBtn">초기화</button>
+                </div>
+            </div>
+            <div class="filter-quick-row">
+                <span class="filter-quick-label">빠른 필터:</span>
+                <button type="button" class="btn btn-quick" data-range="today">오늘</button>
+                <button type="button" class="btn btn-quick" data-range="week">이번 주</button>
+                <button type="button" class="btn btn-quick" data-range="month">이번 달</button>
+                <button type="button" class="btn btn-quick" data-range="all">전체</button>
+            </div>
+        </section>
+
+        <!-- 통계 요약 -->
+        <section class="chat-history-stats">
+            <div class="stat-card">
+                <span class="stat-icon">💬</span>
+                <div class="stat-info">
+                    <span class="stat-value" id="statTotalChats">0</span>
+                    <span class="stat-label">총 상담 수</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">📅</span>
+                <div class="stat-info">
+                    <span class="stat-value" id="statTotalSessions">0</span>
+                    <span class="stat-label">총 세션 수</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">🕐</span>
+                <div class="stat-info">
+                    <span class="stat-value" id="statLastChat">-</span>
+                    <span class="stat-label">마지막 상담</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 세션 목록 -->
+        <section class="chat-history-sessions" id="sessionsContainer">
+            <div class="loading-state" id="loadingState">
+                <div class="loading-spinner"></div>
+                <p>상담 내역을 불러오는 중...</p>
+            </div>
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <span class="empty-icon">🤖</span>
+                <h3>아직 상담 내역이 없습니다</h3>
+                <p>AI 챗봇에서 상담을 시작해보세요!</p>
+                <a href="dashboard.html" class="btn btn-primary">대시보드로 이동</a>
+            </div>
+            <div id="sessionsList"></div>
+        </section>
+
+        <!-- 페이지네이션 -->
+        <div class="pagination" id="pagination" style="display: none;">
+            <button type="button" class="btn btn-page" id="prevPageBtn" disabled>← 이전</button>
+            <span class="page-info" id="pageInfo">1 / 1</span>
+            <button type="button" class="btn btn-page" id="nextPageBtn" disabled>다음 →</button>
+        </div>
+    </main>
+
+    <!-- 상담 상세 모달 -->
+    <div class="modal-overlay" id="chatDetailModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 id="modalTitle">상담 상세</h2>
+                <button type="button" class="modal-close" id="modalCloseBtn">✕</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- 상세 내용은 JS에서 동적으로 렌더링 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="deleteSessionBtn">이 세션 삭제</button>
+                <button type="button" class="btn btn-secondary" id="modalCloseBtn2">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/toast.js"></script>
+    <script src="js/chat-history.js"></script>
+    <script>
+        auth.init().then(function() {
+        if (!auth.isLoggedIn()) { location.href = 'index.html'; return; }
+
+        // ── 테마 ──────────────────────────────────────────────
+        function syncAllThemeBtns() {
+            const isDark = theme.get() === theme.DARK;
+            document.getElementById('themeToggle').textContent = isDark ? '🌙' : '☀️';
+            document.getElementById('themeToggleMobile').textContent = isDark ? '🌙' : '☀️';
+        }
+        syncAllThemeBtns();
+        document.getElementById('themeToggle').addEventListener('click', function() {
+            theme.toggle(); syncAllThemeBtns();
+        });
+        document.getElementById('themeToggleMobile').addEventListener('click', function() {
+            theme.toggle(); syncAllThemeBtns();
+        });
+
+        // ── 로그아웃 ───────────────────────────────────────────
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            if (confirm('로그아웃 하시겠습니까?')) auth.logout();
+        });
+        document.getElementById('logoutBtnMobile').addEventListener('click', function() {
+            auth.logout();
+        });
+
+        // ── 모바일 메뉴 ────────────────────────────────────────
+        const mobileMenuBtn    = document.getElementById('mobileMenuBtn');
+        const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+        const mobileNavDrawer  = document.getElementById('mobileNavDrawer');
+        const mobileNavClose   = document.getElementById('mobileNavClose');
+        function openMobileMenu() {
+            mobileNavOverlay.classList.add('open'); mobileNavDrawer.classList.add('open');
+            mobileMenuBtn.classList.add('active'); mobileMenuBtn.setAttribute('aria-expanded', 'true');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeMobileMenu() {
+            mobileNavOverlay.classList.remove('open'); mobileNavDrawer.classList.remove('open');
+            mobileMenuBtn.classList.remove('active'); mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+        }
+        mobileMenuBtn.addEventListener('click', openMobileMenu);
+        mobileNavClose.addEventListener('click', closeMobileMenu);
+        mobileNavOverlay.addEventListener('click', closeMobileMenu);
+
+        // ── 모바일 아코디언 ────────────────────────────────────
+        document.querySelectorAll('.mobile-accordion-trigger').forEach(function(trigger) {
+            trigger.addEventListener('click', function() {
+                const panel = document.getElementById(this.dataset.target);
+                const arrow = this.querySelector('.mobile-accordion-arrow');
+                const isOpen = panel.classList.contains('open');
+                document.querySelectorAll('.mobile-accordion-panel').forEach(p => p.classList.remove('open'));
+                document.querySelectorAll('.mobile-accordion-arrow').forEach(a => a.style.transform = '');
+                if (!isOpen) { panel.classList.add('open'); arrow.style.transform = 'rotate(180deg)'; }
+            });
+        });
+
+        // ── 데스크탑 드롭다운 ──────────────────────────────────
+        document.querySelectorAll('.gnb-item.has-dropdown > .gnb-link').forEach(function(el) {
+            el.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const item = this.closest('.gnb-item');
+                const isOpen = item.classList.contains('open');
+                document.querySelectorAll('.gnb-item.has-dropdown').forEach(function(i) {
+                    i.classList.remove('open');
+                    i.querySelector('.gnb-link').setAttribute('aria-expanded', 'false');
+                });
+                if (!isOpen) { item.classList.add('open'); this.setAttribute('aria-expanded', 'true'); }
+            });
+        });
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.gnb-item.has-dropdown').forEach(function(i) {
+                i.classList.remove('open');
+                i.querySelector('.gnb-link').setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        // ── 상담 내역 초기화 ──────────────────────────────────
+        if (typeof ChatHistory !== 'undefined') {
+            ChatHistory.init();
+        }
+        });
+    </script>
+</body>
+</html>

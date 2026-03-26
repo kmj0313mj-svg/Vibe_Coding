@@ -3,6 +3,10 @@
 // config.js는 .gitignore에 추가되어 GitHub에 업로드되지 않습니다
 
 const API_CONFIG = {
+    // Supabase (Authentication) — 프로젝트 Settings → API
+    SUPABASE_URL: 'https://YOUR_PROJECT_REF.supabase.co',
+    SUPABASE_ANON_KEY: 'YOUR_SUPABASE_ANON_PUBLIC_KEY',
+
     // OpenAI API 키 (server 모드에서만 사용)
     OPENAI_API_KEY: 'your-api-key-here',
     
@@ -13,5 +17,5 @@ const API_CONFIG = {
     // 'cloudflare': Cloudflare Worker 사용 (가장 권장) - API 키가 클라이언트에 노출되지 않음
     // 'server': 서버의 API 키 사용 - 모든 사용자가 서버 API 키 사용
     // 'user': 사용자가 설정한 API 키 사용 - 각 사용자가 설정 페이지에서 개인 API 키 입력
-    MODE: 'cloudflare'
+    MODE: 'user'
 };

@@ -6,6 +6,9 @@
     <title>반려동물 모니터링 - 로그인</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="js/theme.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
 </head>
 <body class="login-page">
     <button type="button" class="btn btn-theme theme-fab" id="themeToggle" title="테마 전환">🌙</button>
@@ -18,18 +21,21 @@
             </div>
             <form id="loginForm" class="login-form">
                 <div class="form-group">
-                    <label for="username">아이디</label>
-                    <input type="text" id="username" name="username" placeholder="아이디를 입력하세요" required autocomplete="username">
+                    <label for="loginEmail">이메일</label>
+                    <input type="email" id="loginEmail" name="email" placeholder="example@email.com" required autocomplete="username">
                 </div>
                 <div class="form-group">
                     <label for="password">비밀번호</label>
                     <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required autocomplete="current-password">
                 </div>
                 <div id="loginError" class="error-message" style="display: none;"></div>
+                <div id="loginResendWrap" class="login-resend-wrap" style="display: none;">
+                    <button type="button" class="btn btn-secondary btn-block" id="loginResendBtn">인증 메일 다시 보내기</button>
+                </div>
                 <button type="submit" class="btn btn-primary btn-block">로그인</button>
             </form>
             <div class="login-footer">
-                <p class="login-hint">데모: 아이디 <strong>admin</strong> / 비밀번호 <strong>1234</strong></p>
+                <p class="login-hint">Supabase에 등록한 이메일로 로그인하세요.</p>
                 <p class="signup-link">계정이 없으신가요? <a href="#" id="signupLink">회원가입</a></p>
             </div>
         </div>
@@ -44,20 +50,16 @@
             </div>
             <form id="signupForm" class="signup-form">
                 <div class="form-group">
-                    <label for="signupUsername">아이디</label>
-                    <input type="text" id="signupUsername" name="username" placeholder="아이디를 입력하세요 (4-20자)" required minlength="4" maxlength="20">
+                    <label for="signupEmail">이메일</label>
+                    <input type="email" id="signupEmail" name="email" placeholder="example@email.com" required autocomplete="email">
                 </div>
                 <div class="form-group">
                     <label for="signupPassword">비밀번호</label>
-                    <input type="password" id="signupPassword" name="password" placeholder="비밀번호를 입력하세요 (최소 6자)" required minlength="6">
+                    <input type="password" id="signupPassword" name="password" placeholder="비밀번호 (최소 6자)" required minlength="6">
                 </div>
                 <div class="form-group">
                     <label for="signupPasswordConfirm">비밀번호 확인</label>
                     <input type="password" id="signupPasswordConfirm" name="passwordConfirm" placeholder="비밀번호를 다시 입력하세요" required>
-                </div>
-                <div class="form-group">
-                    <label for="signupEmail">이메일 (선택)</label>
-                    <input type="email" id="signupEmail" name="email" placeholder="example@email.com">
                 </div>
                 <div id="signupError" class="error-message" style="display: none;"></div>
                 <div id="signupSuccess" class="success-message" style="display: none;"></div>
@@ -65,31 +67,63 @@
             </form>
         </div>
     </div>
-    <script src="js/auth.js"></script>
     <script>
-        // 테마 토글
         document.getElementById('themeToggle').addEventListener('click', function() {
             const next = theme.toggle();
             this.textContent = next === theme.DARK ? '🌙' : '☀️';
         });
         document.getElementById('themeToggle').textContent = theme.get() === theme.DARK ? '🌙' : '☀️';
 
-        // 로그인 폼 제출
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const errorEl = document.getElementById('loginError');
-
-            if (auth.login(username, password)) {
+        auth.init().then(function() {
+            if (auth.isLoggedIn()) {
                 window.location.href = 'dashboard.html';
-            } else {
-                errorEl.textContent = '아이디 또는 비밀번호가 올바르지 않습니다.';
-                errorEl.style.display = 'block';
             }
         });
 
-        // 회원가입 모달 열기/닫기
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('password').value;
+            const errorEl = document.getElementById('loginError');
+            errorEl.className = 'error-message';
+            errorEl.style.display = 'none';
+
+            if (!auth.isConfigured()) {
+                errorEl.textContent = 'Supabase 설정이 필요합니다. js/config.js에 SUPABASE_URL과 SUPABASE_ANON_KEY를 입력하세요.';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            await auth.init();
+            const loginResendWrap = document.getElementById('loginResendWrap');
+            loginResendWrap.style.display = 'none';
+
+            const result = await auth.login(email, password);
+            if (result.ok) {
+                window.location.href = 'dashboard.html';
+                return;
+            }
+            errorEl.textContent = result.message || '로그인에 실패했습니다.';
+            errorEl.style.display = 'block';
+            if (result.code === 'email_not_confirmed') {
+                loginResendWrap.style.display = 'block';
+            }
+        });
+
+        document.getElementById('loginResendBtn').addEventListener('click', async function() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const errorEl = document.getElementById('loginError');
+            if (!email) {
+                errorEl.textContent = '이메일을 입력한 뒤 다시 시도해 주세요.';
+                errorEl.style.display = 'block';
+                return;
+            }
+            const r = await auth.resendSignupEmail(email);
+            errorEl.className = r.ok ? 'success-message' : 'error-message';
+            errorEl.textContent = r.ok ? r.message : r.message;
+            errorEl.style.display = 'block';
+        });
+
         const signupModal = document.getElementById('signupModal');
         const signupLink = document.getElementById('signupLink');
         const closeModal = document.getElementById('closeModal');
@@ -116,18 +150,22 @@
             }
         });
 
-        // 회원가입 폼 제출
-        document.getElementById('signupForm').addEventListener('submit', function(e) {
+        document.getElementById('signupForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const username = document.getElementById('signupUsername').value;
+            const email = document.getElementById('signupEmail').value.trim();
             const password = document.getElementById('signupPassword').value;
             const passwordConfirm = document.getElementById('signupPasswordConfirm').value;
-            const email = document.getElementById('signupEmail').value;
             const errorEl = document.getElementById('signupError');
             const successEl = document.getElementById('signupSuccess');
 
             errorEl.style.display = 'none';
             successEl.style.display = 'none';
+
+            if (!auth.isConfigured()) {
+                errorEl.textContent = 'Supabase 설정이 필요합니다. js/config.js를 확인하세요.';
+                errorEl.style.display = 'block';
+                return;
+            }
 
             if (password !== passwordConfirm) {
                 errorEl.textContent = '비밀번호가 일치하지 않습니다.';
@@ -135,13 +173,19 @@
                 return;
             }
 
-            const result = auth.signup(username, password, email);
+            const result = await auth.signup(email, password);
             if (result.success) {
-                successEl.textContent = '회원가입이 완료되었습니다! 로그인해주세요.';
+                if (result.needsConfirmation) {
+                    successEl.textContent = '가입 메일을 확인해 주세요. 인증 후 로그인할 수 있습니다.';
+                } else {
+                    successEl.textContent = '회원가입이 완료되었습니다! 잠시 후 이동합니다.';
+                    setTimeout(function() {
+                        window.location.href = 'dashboard.html';
+                    }, 800);
+                }
                 successEl.style.display = 'block';
-                setTimeout(function() {
-                    closeSignupModal();
-                }, 2000);
+                if (!result.needsConfirmation) return;
+                setTimeout(closeSignupModal, 3500);
             } else {
                 errorEl.textContent = result.message || '회원가입에 실패했습니다.';
                 errorEl.style.display = 'block';

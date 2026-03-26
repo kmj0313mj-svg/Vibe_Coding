@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>반려동물 모니터링 - Activity</title>
+    <title>반려동물 모니터링 - 사진첩</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="js/theme.js"></script>
 </head>
@@ -11,8 +11,6 @@
 
     <!-- ===== GNB ===== -->
     <header class="gnb" role="banner">
-
-        <!-- 좌측: 로고 -->
         <div class="gnb-logo">
             <a href="dashboard.html" class="gnb-logo-link">
                 <span class="gnb-logo-icon">🐾</span>
@@ -20,38 +18,38 @@
             </a>
         </div>
 
-        <!-- 중앙: 메인 네비게이션 -->
         <nav class="gnb-nav" aria-label="주 네비게이션">
             <ul class="gnb-menu" role="menubar">
-
                 <li class="gnb-item" role="none">
                     <a href="dashboard.html" class="gnb-link" role="menuitem">Home</a>
                 </li>
-
                 <li class="gnb-item has-dropdown" role="none">
                     <button type="button" class="gnb-link active" role="menuitem" aria-haspopup="true" aria-expanded="false">
                         Activity <span class="gnb-arrow">▾</span>
                     </button>
                     <ul class="gnb-dropdown" role="menu" aria-label="Activity 하위 메뉴">
                         <li role="none">
-                            <a href="gallery.html" class="gnb-dropdown-item" role="menuitem">
+                            <a href="photos.html" class="gnb-dropdown-item" role="menuitem">
                                 <span class="gnb-dropdown-icon">📷</span> 사진첩
                             </a>
                         </li>
                         <li role="none">
-                            <a href="gallery.html" class="gnb-dropdown-item" role="menuitem">
+                            <a href="diary.html" class="gnb-dropdown-item" role="menuitem">
                                 <span class="gnb-dropdown-icon">📝</span> 기록장
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a href="chat-history.html" class="gnb-dropdown-item" role="menuitem">
+                                <span class="gnb-dropdown-icon">🤖</span> AI 상담 내역
                             </a>
                         </li>
                     </ul>
                 </li>
-
                 <li class="gnb-item" role="none">
                     <a href="https://www.happypet.co.kr" target="_blank" rel="noopener noreferrer" class="gnb-link" role="menuitem">
                         Pet News <span class="gnb-external">↗</span>
                     </a>
                 </li>
-
                 <li class="gnb-item has-dropdown" role="none">
                     <button type="button" class="gnb-link" role="menuitem" aria-haspopup="true" aria-expanded="false">
                         Support <span class="gnb-arrow">▾</span>
@@ -69,11 +67,9 @@
                         </li>
                     </ul>
                 </li>
-
             </ul>
         </nav>
 
-        <!-- 우측: 사용자 액션 -->
         <div class="gnb-actions">
             <button type="button" class="btn btn-theme" id="themeToggle" title="테마 전환">🌙</button>
             <a href="settings.html" class="gnb-mypage-btn" title="마이페이지" aria-label="마이페이지">
@@ -82,14 +78,10 @@
             </a>
             <div class="gnb-divider" aria-hidden="true"></div>
             <button type="button" class="gnb-logout-btn" id="logoutBtn">로그아웃</button>
-            <!-- 모바일 햄버거 -->
             <button type="button" class="btn-hamburger" id="mobileMenuBtn" aria-label="메뉴 열기" aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span></span><span></span><span></span>
             </button>
         </div>
-
     </header>
 
     <!-- ===== 모바일 네비게이션 드로어 ===== -->
@@ -100,12 +92,9 @@
             <button type="button" class="mobile-nav-close" id="mobileNavClose" aria-label="메뉴 닫기">✕</button>
         </div>
         <div class="mobile-nav-links">
-            <!-- Home -->
             <a href="dashboard.html" class="mobile-nav-item">
                 <span class="mobile-nav-icon">🏠</span> Home
             </a>
-
-            <!-- Activity 아코디언 (현재 활성) -->
             <div class="mobile-nav-accordion">
                 <button type="button" class="mobile-nav-item active mobile-accordion-trigger" data-target="mobileActivityMenu">
                     <span class="mobile-nav-icon">📸</span>
@@ -113,23 +102,22 @@
                     <span class="mobile-accordion-arrow">▾</span>
                 </button>
                 <div class="mobile-accordion-panel open" id="mobileActivityMenu">
-                    <a href="gallery.html" class="mobile-nav-sub-item">
+                    <a href="photos.html" class="mobile-nav-sub-item" style="color:var(--primary);font-weight:600;">
                         <span class="mobile-nav-icon">📷</span> 사진첩
                     </a>
-                    <a href="gallery.html" class="mobile-nav-sub-item">
+                    <a href="diary.html" class="mobile-nav-sub-item">
                         <span class="mobile-nav-icon">📝</span> 기록장
+                    </a>
+                    <a href="chat-history.html" class="mobile-nav-sub-item">
+                        <span class="mobile-nav-icon">🤖</span> AI 상담 내역
                     </a>
                 </div>
             </div>
-
-            <!-- Pet News -->
             <a href="https://www.happypet.co.kr" target="_blank" rel="noopener noreferrer" class="mobile-nav-item">
                 <span class="mobile-nav-icon">🐶</span>
                 <span style="flex:1;">Pet News</span>
                 <span style="font-size:0.75rem; opacity:0.5;">↗</span>
             </a>
-
-            <!-- Support 아코디언 -->
             <div class="mobile-nav-accordion">
                 <button type="button" class="mobile-nav-item mobile-accordion-trigger" data-target="mobileSupportMenu">
                     <span class="mobile-nav-icon">🛎️</span>
@@ -145,13 +133,10 @@
                     </a>
                 </div>
             </div>
-
-            <!-- 마이페이지 -->
             <a href="settings.html" class="mobile-nav-item">
                 <span class="mobile-nav-icon">👤</span> 마이페이지
             </a>
         </div>
-
         <div class="mobile-nav-theme-row">
             <span class="mobile-nav-theme-label">화면 테마</span>
             <button type="button" class="btn btn-theme" id="themeToggleMobile" title="테마 전환">🌙</button>
@@ -166,17 +151,14 @@
     <!-- ===== 페이지 본문 ===== -->
     <main class="gallery-page">
         <div class="gallery-header">
-            <h1>📒 Activity</h1>
-            <p>반려동물의 일기와 캡처한 사진을 모아보세요.</p>
+            <h1>📷 사진첩</h1>
+            <p>반려동물의 소중한 순간을 캡처하고 저장하세요.</p>
+            <div class="gallery-nav-links">
+                <a href="diary.html" class="gallery-nav-link">📝 기록장 보기 →</a>
+            </div>
         </div>
 
-        <!-- 탭 -->
-        <div class="gallery-tabs">
-            <button type="button" class="tab-btn active" data-tab="photos">📷 사진첩</button>
-            <button type="button" class="tab-btn" data-tab="diary">📝 일기</button>
-        </div>
-
-        <!-- 사진첩 탭 -->
+        <!-- 사진첩 -->
         <section class="gallery-tab-content active" id="tab-photos">
             <div class="tab-toolbar">
                 <p class="tab-hint">대시보드에서 캡처하거나, 직접 사진을 업로드할 수 있습니다.</p>
@@ -195,24 +177,6 @@
                     <button type="button" class="btn btn-primary" id="emptyUploadBtn">📤 사진 업로드</button>
                     <a href="dashboard.html" class="btn btn-secondary">📷 대시보드로 이동</a>
                 </div>
-            </div>
-        </section>
-
-        <!-- 일기 탭 -->
-        <section class="gallery-tab-content" id="tab-diary">
-            <div class="diary-input-section">
-                <textarea id="diaryInput" placeholder="오늘 반려동물과 무슨 일이 있었나요? 일기를 작성해보세요..." rows="4"></textarea>
-                <button type="button" class="btn btn-primary" id="diaryAddBtn">✏️ 일기 작성</button>
-            </div>
-            <div class="tab-toolbar">
-                <input type="text" class="search-input" id="diarySearch" placeholder="일기 내용 검색...">
-            </div>
-            <div class="diary-list" id="diaryList"></div>
-            <div class="empty-state" id="diaryEmpty">
-                <span class="empty-icon">📝</span>
-                <p>작성된 일기가 없습니다.</p>
-                <p class="empty-sub">오늘 반려동물과의 하루를 기록해보세요!</p>
-                <button type="button" class="btn btn-primary" id="emptyDiaryBtn">✏️ 첫 일기 쓰기</button>
             </div>
         </section>
     </main>
@@ -244,16 +208,11 @@
                         <div class="chat-float-title-sub">무엇이든 물어보세요!</div>
                     </div>
                 </div>
+                <button type="button" class="chat-float-reset" id="chatResetBtn" aria-label="대화 초기화" title="새 대화 시작">🔄</button>
                 <button type="button" class="chat-float-close" id="chatFloatClose" aria-label="챗봇 닫기">✕</button>
             </div>
-            <div class="chat-float-messages" id="chatbotMessages">
-                <div class="chatbot-message bot-message">
-                    <div class="message-avatar">🤖</div>
-                    <div class="message-content">
-                        <p>안녕하세요! 🐾 반려동물 관련 질문이 있으시면 무엇이든 물어보세요.</p>
-                    </div>
-                </div>
-            </div>
+            <div class="chat-float-messages" id="chatbotMessages"></div>
+            <div class="chat-quick-questions" id="quickQuestions"></div>
             <div class="chat-float-input">
                 <input type="text" id="chatbotInput" placeholder="반려동물에 대해 물어보세요..." maxlength="500" autocomplete="off">
                 <button type="button" class="chat-float-send" id="chatbotSendBtn">전송</button>
@@ -271,105 +230,13 @@
         </button>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/config.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/toast.js"></script>
-    <script src="js/gallery.js"></script>
+    <script src="js/photos.js"></script>
     <script src="js/chatbot.js"></script>
-    <script>
-        // ── 테마 (데스크탑은 gallery.js가 처리, 모바일만 여기서) ─
-        const _mobileThemeBtn = document.getElementById('themeToggleMobile');
-        _mobileThemeBtn.textContent = theme.get() === theme.DARK ? '🌙' : '☀️';
-        _mobileThemeBtn.addEventListener('click', function() {
-            const next = theme.toggle();
-            this.textContent = next === theme.DARK ? '🌙' : '☀️';
-            document.getElementById('themeToggle').textContent = next === theme.DARK ? '🌙' : '☀️';
-        });
-
-        // ── 모바일 메뉴 열기/닫기 ─────────────────────────────
-        const mobileMenuBtn  = document.getElementById('mobileMenuBtn');
-        const mobileNavOverlay = document.getElementById('mobileNavOverlay');
-        const mobileNavDrawer  = document.getElementById('mobileNavDrawer');
-        const mobileNavClose   = document.getElementById('mobileNavClose');
-
-        function openMobileMenu() {
-            mobileNavOverlay.classList.add('open');
-            mobileNavDrawer.classList.add('open');
-            mobileMenuBtn.classList.add('active');
-            mobileMenuBtn.setAttribute('aria-expanded', 'true');
-            document.body.style.overflow = 'hidden';
-        }
-        function closeMobileMenu() {
-            mobileNavOverlay.classList.remove('open');
-            mobileNavDrawer.classList.remove('open');
-            mobileMenuBtn.classList.remove('active');
-            mobileMenuBtn.setAttribute('aria-expanded', 'false');
-            document.body.style.overflow = '';
-        }
-
-        mobileMenuBtn.addEventListener('click', openMobileMenu);
-        mobileNavClose.addEventListener('click', closeMobileMenu);
-        mobileNavOverlay.addEventListener('click', closeMobileMenu);
-
-        // ── 모바일 아코디언 ────────────────────────────────────
-        document.querySelectorAll('.mobile-accordion-trigger').forEach(function(trigger) {
-            trigger.addEventListener('click', function() {
-                const panel = document.getElementById(this.dataset.target);
-                const arrow = this.querySelector('.mobile-accordion-arrow');
-                const isOpen = panel.classList.contains('open');
-
-                document.querySelectorAll('.mobile-accordion-panel').forEach(function(p) {
-                    p.classList.remove('open');
-                });
-                document.querySelectorAll('.mobile-accordion-arrow').forEach(function(a) {
-                    a.style.transform = '';
-                });
-
-                if (!isOpen) {
-                    panel.classList.add('open');
-                    arrow.style.transform = 'rotate(180deg)';
-                }
-            });
-        });
-
-        // Activity 패널은 기본 열림 상태이므로 화살표도 회전
-        (function() {
-            const activityTrigger = document.querySelector('[data-target="mobileActivityMenu"]');
-            if (activityTrigger) {
-                const arrow = activityTrigger.querySelector('.mobile-accordion-arrow');
-                if (arrow) arrow.style.transform = 'rotate(180deg)';
-            }
-        })();
-
-        // ── 데스크탑 드롭다운 ─────────────────────────────────
-        document.querySelectorAll('.gnb-item.has-dropdown > .gnb-link').forEach(function(el) {
-            el.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const item = this.closest('.gnb-item');
-                const isOpen = item.classList.contains('open');
-                document.querySelectorAll('.gnb-item.has-dropdown').forEach(function(i) {
-                    i.classList.remove('open');
-                    i.querySelector('.gnb-link').setAttribute('aria-expanded', 'false');
-                });
-                if (!isOpen) {
-                    item.classList.add('open');
-                    this.setAttribute('aria-expanded', 'true');
-                }
-            });
-        });
-
-        document.addEventListener('click', function() {
-            document.querySelectorAll('.gnb-item.has-dropdown').forEach(function(i) {
-                i.classList.remove('open');
-                i.querySelector('.gnb-link').setAttribute('aria-expanded', 'false');
-            });
-        });
-
-        // ── 모바일 로그아웃 ───────────────────────────────────
-        document.getElementById('logoutBtnMobile').addEventListener('click', function() {
-            auth.logout();
-        });
-    </script>
+    <script src="js/common-nav.js"></script>
 </body>
 </html>

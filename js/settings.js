@@ -1,10 +1,16 @@
 // 설정 페이지 스크립트
 
-// 페이지 로드 시 설정 불러오기
+// 페이지 로드 시 설정 불러오기 (Supabase 세션 복원 후)
 document.addEventListener('DOMContentLoaded', () => {
-    checkApiMode();
-    loadSettings();
-    setupEventListeners();
+    auth.init().then(() => {
+        if (!auth.isLoggedIn()) {
+            window.location.href = 'index.html';
+            return;
+        }
+        checkApiMode();
+        loadSettings();
+        setupEventListeners();
+    });
 });
 
 // API 모드 확인 및 UI 조정
@@ -36,7 +42,7 @@ function checkApiMode() {
 }
 
 // 설정 불러오기
-function loadSettings() {
+async function loadSettings() {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     const currentUser = localStorage.getItem('currentUser') || localStorage.getItem('username');
 
@@ -45,42 +51,34 @@ function loadSettings() {
         return;
     }
 
-    // 사용자 정보 표시
+    const appData = await auth.loadAppData();
+    const createdAt = appData && appData.createdAt ? new Date(appData.createdAt) : null;
+
     document.getElementById('displayUsername').value = currentUser;
+    document.getElementById('displayJoinDate').value = createdAt
+        ? `${createdAt.getFullYear()}.${String(createdAt.getMonth() + 1).padStart(2, '0')}.${String(createdAt.getDate()).padStart(2, '0')}`
+        : '정보 없음';
 
-    // 가입일 표시 (버그 수정: users에서 joinDate 불러오기)
-    const users = JSON.parse(localStorage.getItem('users') || '{}');
-    if (users[currentUser] && users[currentUser].joinDate) {
-        const joinDate = new Date(users[currentUser].joinDate);
-        document.getElementById('displayJoinDate').value =
-            `${joinDate.getFullYear()}.${String(joinDate.getMonth() + 1).padStart(2, '0')}.${String(joinDate.getDate()).padStart(2, '0')}`;
-    } else {
-        document.getElementById('displayJoinDate').value = '데모 계정';
-    }
+    document.getElementById('petName').value = localStorage.getItem('petName') || '';
+    document.getElementById('petSpecies').value = localStorage.getItem('petSpecies') || 'other';
+    document.getElementById('petAge').value = localStorage.getItem('petAge') || '';
+    document.getElementById('petTraits').value = localStorage.getItem('petTraits') || '';
 
-    // 반려동물 이름
-    const petName = localStorage.getItem('petName') || '';
-    document.getElementById('petName').value = petName;
-
-    // 메일 알림 설정
     document.getElementById('mailNotificationSwitch').checked =
         localStorage.getItem('mailNotification') === 'true';
     document.getElementById('mailRecipient').value =
-        localStorage.getItem('mailRecipient') || '';
+        localStorage.getItem('mailRecipient') || currentUser || '';
     document.getElementById('mailDelay').value =
         localStorage.getItem('mailDelay') || '30';
 
-    // 모터 속도 설정
     document.getElementById('motorSpeed').value =
         localStorage.getItem('motorSpeed') || 'medium';
 
-    // OpenAI API 키
     const apiKey = localStorage.getItem('openai_api_key') || '';
     if (apiKey) {
         document.getElementById('openaiApiKey').value = apiKey;
     }
 
-    // 현재 테마 표시
     const currentTheme = localStorage.getItem('theme') || 'dark';
     document.querySelectorAll('.theme-option').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.theme === currentTheme);
@@ -89,49 +87,54 @@ function loadSettings() {
 
 // 이벤트 리스너 설정
 function setupEventListeners() {
-    // 반려동물 이름 저장: 버튼 클릭, 엔터 제출, 입력값 변경 모두 지원
-    const petNameInput = document.getElementById('petName');
     const petNameForm = document.getElementById('petNameForm');
 
-    function savePetName() {
-        const name = petNameInput.value.trim();
-        localStorage.setItem('petName', name);
-        showSuccessMessage(name ? `'${name}' 이름이 저장되었습니다.` : '반려동물 이름이 초기화되었습니다.');
-    }
+    async function savePetAndNotificationSettings() {
+        const mailRecipient = document.getElementById('mailRecipient').value.trim();
+        const petAge = document.getElementById('petAge').value.trim();
 
-    petNameForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        savePetName();
-    });
-
-    petNameInput.addEventListener('change', savePetName);
-    petNameInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            savePetName();
-        }
-    });
-
-    // 메일 알림 설정
-    document.getElementById('mailNotificationSwitch').addEventListener('change', (e) => {
-        localStorage.setItem('mailNotification', e.target.checked);
-        showSuccessMessage('알림 설정이 저장되었습니다.');
-    });
-
-    document.getElementById('mailRecipient').addEventListener('change', (e) => {
-        const email = e.target.value.trim();
-        if (email && !isValidEmail(email)) {
+        if (mailRecipient && !isValidEmail(mailRecipient)) {
             showErrorMessage('올바른 이메일 형식이 아닙니다.');
             return;
         }
-        localStorage.setItem('mailRecipient', email);
-        showSuccessMessage('수신 메일 주소가 저장되었습니다.');
+
+        if (petAge && Number(petAge) < 0) {
+            showErrorMessage('반려동물 나이는 0 이상이어야 합니다.');
+            return;
+        }
+
+        const result = await auth.saveAppData({
+            petName: document.getElementById('petName').value.trim(),
+            petSpecies: document.getElementById('petSpecies').value,
+            petAge: petAge,
+            petTraits: document.getElementById('petTraits').value.trim(),
+            mailNotification: document.getElementById('mailNotificationSwitch').checked,
+            mailRecipient: mailRecipient,
+            mailDelay: document.getElementById('mailDelay').value
+        });
+
+        if (!result.ok) {
+            showErrorMessage(result.message || '설정 저장에 실패했습니다.');
+            return;
+        }
+
+        showSuccessMessage('사용자/반려동물 설정이 저장되었습니다.');
+    }
+
+    petNameForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await savePetAndNotificationSettings();
     });
 
-    document.getElementById('mailDelay').addEventListener('change', (e) => {
-        localStorage.setItem('mailDelay', e.target.value);
-        showSuccessMessage('알림 지연 시간이 저장되었습니다.');
-    });
+    ['petName', 'petSpecies', 'petAge', 'petTraits', 'mailRecipient', 'mailDelay', 'mailNotificationSwitch']
+        .forEach((id) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const eventName = el.tagName === 'SELECT' || el.type === 'checkbox' ? 'change' : 'change';
+            el.addEventListener(eventName, () => {
+                savePetAndNotificationSettings();
+            });
+        });
 
     // 모터 속도 설정
     document.getElementById('motorSpeed').addEventListener('change', (e) => {
@@ -270,32 +273,17 @@ function handlePasswordChange(e) {
         return;
     }
 
-    // 현재 사용자 정보 가져오기
-    const currentUser = localStorage.getItem('currentUser');
-    const users = JSON.parse(localStorage.getItem('users') || '{}');
+    auth.changePassword(currentPassword, newPassword).then((result) => {
+        if (!result.ok) {
+            errorDiv.textContent = result.message || '비밀번호 변경에 실패했습니다.';
+            errorDiv.style.display = 'block';
+            return;
+        }
 
-    if (!users[currentUser]) {
-        errorDiv.textContent = '사용자 정보를 찾을 수 없습니다.';
-        errorDiv.style.display = 'block';
-        return;
-    }
-
-    // 현재 비밀번호 확인
-    if (users[currentUser].password !== currentPassword) {
-        errorDiv.textContent = '현재 비밀번호가 일치하지 않습니다.';
-        errorDiv.style.display = 'block';
-        return;
-    }
-
-    // 비밀번호 변경
-    users[currentUser].password = newPassword;
-    localStorage.setItem('users', JSON.stringify(users));
-
-    successDiv.textContent = '비밀번호가 성공적으로 변경되었습니다.';
-    successDiv.style.display = 'block';
-
-    // 폼 초기화
-    document.getElementById('passwordForm').reset();
+        successDiv.textContent = result.message || '비밀번호가 성공적으로 변경되었습니다.';
+        successDiv.style.display = 'block';
+        document.getElementById('passwordForm').reset();
+    });
 }
 
 // 이메일 유효성 검사

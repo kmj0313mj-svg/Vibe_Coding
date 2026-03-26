@@ -33,13 +33,18 @@
                     </button>
                     <ul class="gnb-dropdown" role="menu" aria-label="Activity 하위 메뉴">
                         <li role="none">
-                            <a href="gallery.html" class="gnb-dropdown-item" role="menuitem">
+                            <a href="photos.html" class="gnb-dropdown-item" role="menuitem">
                                 <span class="gnb-dropdown-icon">📷</span> 사진첩
                             </a>
                         </li>
                         <li role="none">
-                            <a href="gallery.html" class="gnb-dropdown-item" role="menuitem">
+                            <a href="diary.html" class="gnb-dropdown-item" role="menuitem">
                                 <span class="gnb-dropdown-icon">📝</span> 기록장
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a href="chat-history.html" class="gnb-dropdown-item" role="menuitem">
+                                <span class="gnb-dropdown-icon">🤖</span> AI 상담 내역
                             </a>
                         </li>
                     </ul>
@@ -112,11 +117,14 @@
                     <span class="mobile-accordion-arrow">▾</span>
                 </button>
                 <div class="mobile-accordion-panel" id="mobileActivityMenu">
-                    <a href="gallery.html" class="mobile-nav-sub-item">
+                    <a href="photos.html" class="mobile-nav-sub-item">
                         <span class="mobile-nav-icon">📷</span> 사진첩
                     </a>
-                    <a href="gallery.html" class="mobile-nav-sub-item">
+                    <a href="diary.html" class="mobile-nav-sub-item">
                         <span class="mobile-nav-icon">📝</span> 기록장
+                    </a>
+                    <a href="chat-history.html" class="mobile-nav-sub-item">
+                        <span class="mobile-nav-icon">🤖</span> AI 상담 내역
                     </a>
                 </div>
             </div>
@@ -229,7 +237,7 @@
         <section class="dashboard-gallery-section">
             <div class="section-header">
                 <h3>📷 최근 사진첩</h3>
-                <a href="gallery.html" class="view-all-link">전체보기 →</a>
+                <a href="photos.html" class="view-all-link">전체보기 →</a>
             </div>
             <div class="recent-photos" id="recentPhotos">
                 <div class="empty-state-mini">
@@ -243,7 +251,7 @@
         <section class="dashboard-diary-section">
             <div class="section-header">
                 <h3>📝 최근 일기</h3>
-                <a href="gallery.html" class="view-all-link">전체보기 →</a>
+                <a href="diary.html" class="view-all-link">전체보기 →</a>
             </div>
             <div class="recent-diaries" id="recentDiaries">
                 <div class="empty-state-mini">
@@ -297,6 +305,7 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/config.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/storage.js"></script>

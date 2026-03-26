@@ -389,32 +389,6 @@ if (chatbotInput) {
     });
 }
 
-// ── 빠른 질문 버튼 ────────────────────────────────────────────
-const quickQuestions = [
-    '강아지 예방접종 일정',
-    '고양이 사료 추천',
-    '반려동물 건강 체크'
-];
-
-function renderQuickQuestions() {
-    const container = document.getElementById('quickQuestions');
-    if (!container) return;
-
-    container.innerHTML = '';
-    quickQuestions.forEach(q => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'quick-question-btn';
-        btn.textContent = q;
-        btn.addEventListener('click', () => {
-            if (chatbotInput) {
-                chatbotInput.value = q;
-                handleSendMessage();
-            }
-        });
-        container.appendChild(btn);
-    });
-}
 
 // ── 대화 초기화 버튼 ──────────────────────────────────────────
 function setupResetButton() {
@@ -426,7 +400,6 @@ function setupResetButton() {
         if (chatbotMessages) {
             chatbotMessages.innerHTML = '';
             showWelcomeMessage();
-            renderQuickQuestions();
         }
     });
 }
@@ -458,7 +431,6 @@ window.addEventListener('DOMContentLoaded', () => {
     ensureHistoryUI();
     resetConversation();
     showWelcomeMessage();
-    renderQuickQuestions();
     setupResetButton();
     loadChatHistory();
 });
